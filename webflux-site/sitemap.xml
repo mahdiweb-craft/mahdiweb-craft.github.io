@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">
+
+    <url>
+        <loc>https://webflux.tr/</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <mobile:mobile/>
+        <image:image>
+            <image:loc>https://webflux.tr/logo.png</image:loc>
+            <image:title>WebFlux Logo</image:title>
+        </image:image>
+        <image:image>
+            <image:loc>https://webflux.tr/founder.jpg</image:loc>
+            <image:title>WebFlux Yöneticisi</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/hizmetler.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
+        <mobile:mobile/>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/projeler.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
+        <mobile:mobile/>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/hakkimizda.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+        <mobile:mobile/>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/blog.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.85</priority>
+        <mobile:mobile/>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/iletisim.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <mobile:mobile/>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/sss.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.75</priority>
+        <mobile:mobile/>
+    </url>
+
+    <url>
+        <loc>https://webflux.tr/kvkk.html</loc>
+        <lastmod>2024-12-20</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+</urlset>

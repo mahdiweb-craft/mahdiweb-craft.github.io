@@ -1,0 +1,16 @@
+/anasayfa          /index.html          301
+/home              /index.html          301
+
+/hizmet            /hizmetler.html      301
+/services          /hizmetler.html      301
+
+/proje             /projeler.html       301
+/projects          /projeler.html       301
+/portfolio         /projeler.html       301
+
+/contact           /iletisim.html       301
+
+/articles          /blog.html           301
+/yazilar           /blog.html           301
+
+/*                 /index.html          404
