@@ -118,7 +118,7 @@ const translations = {
     faq6_q:"Ödeme seçenekleri nelerdir?",faq6_a:"Proje başlangıcında %50, teslimatta %50 olacak şekilde ödeme planı sunuyoruz. Havale/EFT ve kredi kartı ile ödeme kabul ediyoruz.",
     faq7_q:"Sitemin içeriğini ben mi sağlayacağım?",faq7_a:"Evet, genellikle içerikleri müşterilerimiz sağlar. Ancak dilerseniz, profesyonel içerik ve metin yazarlığı hizmeti de sunuyoruz.",
     kvkk_title:"KVKK Aydınlatma Metni",
-    kvkk_p1:"WebFlux.tr olarak, kişisel verilerinizin güvenliği bizim için en öncelikli konudur. 6698 sayılı Kişisel Verilerin Korunması Kanunu ('KVKK') uyarınca, veri sorumlusu olarak, kişisel verilerinizi aşağıda açıklanan amaçlar doğrultusunda işlemekteyiz.",
+    kvkk_p1:"WebFlux.com.tr olarak, kişisel verilerinizin güvenliği bizim için en öncelikli konudur. 6698 sayılı Kişisel Verilerin Korunması Kanunu ('KVKK') uyarınca, veri sorumlusu olarak, kişisel verilerinizi aşağıda açıklanan amaçlar doğrultusunda işlemekteyiz.",
     kvkk_h1:"1. Kişisel Verilerin İşlenme Amacı:",kvkk_p2:"Toplanan kişisel verileriniz (ad, soyad, e-posta, telefon), web tasarım ve dijital pazarlama hizmetlerimizi sunmak, taleplerinizi yanıtlamak ve sizinle iletişime geçmek amacıyla işlenmektedir.",
     kvkk_h2:"2. Kişisel Verilerin Aktarılması:",kvkk_p3:"Kişisel verileriniz, yasal yükümlülüklerin yerine getirilmesi amacıyla yetkili kamu kurum ve kuruluşlarına, hizmet aldığımız üçüncü taraf yazılım sağlayıcılarına aktarılabilmektedir.",
     kvkk_h3:"3. Haklarınız:",kvkk_p4:"KVKK'nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, düzeltilmesini veya silinmesini isteme haklarına sahipsiniz. Taleplerinizi connect.webflux@gmail.com adresine iletebilirsiniz."
@@ -241,7 +241,7 @@ const translations = {
     faq6_q:"What are the payment options?",faq6_a:"We offer a payment plan of 50% at project start and 50% on delivery. We accept bank transfer and credit card.",
     faq7_q:"Will I provide the content of my site?",faq7_a:"Yes, usually our clients provide the content. However, we also offer professional content and copywriting services if you wish.",
     kvkk_title:"Privacy Policy (KVKK)",
-    kvkk_p1:"As WebFlux.tr, the security of your personal data is our top priority. In accordance with the Personal Data Protection Law No. 6698 ('KVKK'), as data controller, we process your personal data for the purposes described below.",
+    kvkk_p1:"As WebFlux.com.tr, the security of your personal data is our top priority. In accordance with the Personal Data Protection Law No. 6698 ('KVKK'), as data controller, we process your personal data for the purposes described below.",
     kvkk_h1:"1. Purpose of Processing Personal Data:",kvkk_p2:"Your collected personal data (name, surname, email, phone) is processed to provide our web design and digital marketing services, respond to your requests and contact you.",
     kvkk_h2:"2. Transfer of Personal Data:",kvkk_p3:"Your personal data may be transferred to authorized public institutions and third-party software providers we work with (hosting, email services) to fulfill legal obligations.",
     kvkk_h3:"3. Your Rights:",kvkk_p4:"Under Article 11 of KVKK, you have the right to learn whether your personal data is processed, request information if processed, and request correction or deletion. You can send your requests to connect.webflux@gmail.com."
@@ -364,7 +364,7 @@ const translations = {
     faq6_q:"گزینه‌های پرداخت چیست؟",faq6_a:"ما طرح پرداخت ۵۰٪ در شروع پروژه و ۵۰٪ در تحویل ارائه می‌دهیم. حواله بانکی و کارت اعتباری می‌پذیریم.",
     faq7_q:"آیا محتوای سایتم را خودم تأمین می‌کنم؟",faq7_a:"بله، معمولاً مشتریان ما محتوا را تأمین می‌کنند. اما در صورت تمایل، خدمات محتوا و نویسندگی حرفه‌ای نیز ارائه می‌دهیم.",
     kvkk_title:"سیاست حفظ حریم خصوصی",
-    kvkk_p1:"به عنوان WebFlux.tr، امنیت داده‌های شخصی شما اولویت اصلی ماست. مطابق قانون حفاظت از داده‌های شخصی شماره ۶۶۹۸، به عنوان کنترل‌کننده داده، داده‌های شخصی شما را برای اهداف توصیف شده در زیر پردازش می‌کنیم.",
+    kvkk_p1:"به عنوان WebFlux.com.tr، امنیت داده‌های شخصی شما اولویت اصلی ماست. مطابق قانون حفاظت از داده‌های شخصی شماره ۶۶۹۸، به عنوان کنترل‌کننده داده، داده‌های شخصی شما را برای اهداف توصیف شده در زیر پردازش می‌کنیم.",
     kvkk_h1:"۱. هدف پردازش داده‌های شخصی:",kvkk_p2:"داده‌های شخصی جمع‌آوری شده شما (نام، نام خانوادگی، ایمیل، تلفن) برای ارائه خدمات طراحی وب و بازاریابی دیجیتال، پاسخ به درخواست‌ها و تماس با شما پردازش می‌شود.",
     kvkk_h2:"۲. انتقال داده‌های شخصی:",kvkk_p3:"داده‌های شخصی شما ممکن است برای انجام تعهدات قانونی به نهادهای عمومی مجاز و ارائه‌دهندگان نرم‌افزار شخص ثالث (هاست، خدمات ایمیل) منتقل شود.",
     kvkk_h3:"۳. حقوق شما:",kvkk_p4:"طبق ماده ۱۱ قانون، شما حق دارید بدانید آیا داده‌های شخصی شما پردازش می‌شود، درخواست اطلاعات کنید و اصلاح یا حذف را درخواست کنید. درخواست‌های خود را به connect.webflux@gmail.com ارسال کنید."
@@ -487,7 +487,7 @@ const translations = {
     faq6_q:"ما هي خيارات الدفع؟",faq6_a:"نقدم خطة دفع 50% في بداية المشروع و 50% عند التسليم. نقبل التحويل البنكي وبطاقة الائتمان.",
     faq7_q:"هل سأوفر محتوى موقعي؟",faq7_a:"نعم، عادة يقدم عملاؤنا المحتوى. ومع ذلك، نقدم أيضاً خدمات المحتوى وكتابة النصوص الاحترافية إذا أردت.",
     kvkk_title:"سياسة الخصوصية",
-    kvkk_p1:"بصفتنا WebFlux.tr، أمن بياناتك الشخصية هو أولويتنا القصوى. وفقاً لقانون حماية البيانات الشخصية رقم 6698، كمراقب بيانات، نعالج بياناتك الشخصية للأغراض الموضحة أدناه.",
+    kvkk_p1:"بصفتنا WebFlux.com.tr، أمن بياناتك الشخصية هو أولويتنا القصوى. وفقاً لقانون حماية البيانات الشخصية رقم 6698، كمراقب بيانات، نعالج بياناتك الشخصية للأغراض الموضحة أدناه.",
     kvkk_h1:"1. الغرض من معالجة البيانات الشخصية:",kvkk_p2:"تتم معالجة بياناتك الشخصية المجمعة (الاسم واللقب والبريد الإلكتروني والهاتف) لتقديم خدمات تصميم الويب والتسويق الرقمي والرد على طلباتك والتواصل معك.",
     kvkk_h2:"2. نقل البيانات الشخصية:",kvkk_p3:"قد يتم نقل بياناتك الشخصية إلى المؤسسات العامة المصرح لها ومقدمي البرامج من الأطراف الثالثة (الاستضافة وخدمات البريد الإلكتروني) للوفاء بالالتزامات القانونية.",
     kvkk_h3:"3. حقوقك:",kvkk_p4:"بموجب المادة 11 من القانون، لديك الحق في معرفة ما إذا كانت بياناتك الشخصية معالجة وطلب المعلومات وطلب التصحيح أو الحذف. يمكنك إرسال طلباتك إلى connect.webflux@gmail.com."
@@ -610,7 +610,7 @@ const translations = {
     faq6_q:"Какие варианты оплаты?",faq6_a:"Мы предлагаем план оплаты 50% в начале проекта и 50% при сдаче. Принимаем банковский перевод и кредитную карту.",
     faq7_q:"Я буду предоставлять контент своего сайта?",faq7_a:"Да, обычно контент предоставляют наши клиенты. Однако, если хотите, мы также предлагаем услуги профессионального контента и копирайтинга.",
     kvkk_title:"Политика конфиденциальности",
-    kvkk_p1:"Как WebFlux.tr, мы ставим безопасность ваших персональных данных на первое место. В соответствии с Законом о защите персональных данных № 6698, как контролёр данных, мы обрабатываем ваши персональные данные для целей, описанных ниже.",
+    kvkk_p1:"Как WebFlux.com.tr, мы ставим безопасность ваших персональных данных на первое место. В соответствии с Законом о защите персональных данных № 6698, как контролёр данных, мы обрабатываем ваши персональные данные для целей, описанных ниже.",
     kvkk_h1:"1. Цель обработки персональных данных:",kvkk_p2:"Ваши собранные персональные данные (имя, фамилия, email, телефон) обрабатываются для предоставления услуг веб-дизайна и цифрового маркетинга, ответа на ваши запросы и связи с вами.",
     kvkk_h2:"2. Передача персональных данных:",kvkk_p3:"Ваши персональные данные могут быть переданы уполномоченным государственным учреждениям и сторонним поставщикам программного обеспечения (хостинг, email-сервисы) для выполнения юридических обязательств.",
     kvkk_h3:"3. Ваши права:",kvkk_p4:"Согласно статье 11 Закона, вы имеете право узнать, обрабатываются ли ваши персональные данные, запросить информацию, а также запросить исправление или удаление. Отправляйте запросы на connect.webflux@gmail.com."
