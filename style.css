@@ -142,3 +142,21 @@ footer{background:#F8FAFC;padding:60px 20px 30px;border-top:1px solid var(--bord
 @media(max-width:992px){.hero h1{font-size:40px}.section-title{font-size:32px}.manager-text h2,.team-text h2{font-size:28px}header{padding:12px 20px}.logo-container img{height:48px}.logo-text{font-size:20px}nav{gap:16px}nav a{font-size:14px}}
 @media(max-width:768px){header{padding:12px 15px;gap:10px;flex-wrap:nowrap}.logo-container img{height:40px}.logo-text{font-size:17px;letter-spacing:0.5px}.menu-toggle{display:block;order:2}.lang-selector{order:3;margin-left:0;margin-right:0}nav{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;width:100%;background:#FFFFFF;padding:20px 25px;border-bottom:1px solid var(--border-color);gap:18px;order:4;margin-left:0;box-shadow:0 10px 30px rgba(11,17,32,0.08)}nav.active{display:flex}nav a{font-size:16px;width:100%;padding:8px 0;border-bottom:1px solid var(--border-color);color:var(--accent-navy)}nav a::after{display:none}.lang-btn{padding:5px 8px;font-size:11px}.lang-option{padding:6px 9px;font-size:11px}.lang-dropdown{min-width:110px}.hero{padding:45px 18px;min-height:70vh}.hero h1{font-size:30px}.hero p{font-size:15px}.section-container{padding:55px 18px}.section-title{font-size:26px;margin-bottom:35px}.grid-3,.grid-4{grid-template-columns:1fr;gap:18px}.card-3d{padding:22px}.card-3d h3{font-size:19px}.manager-section,.team-section{flex-direction:column;text-align:center;gap:30px;margin:55px auto;padding:0 18px}[dir="rtl"] .manager-section,[dir="rtl"] .team-section{flex-direction:column}.manager-img-wrapper img{width:240px;height:240px}.manager-text h2,.team-text h2{font-size:24px}.manager-text p,.team-text p{font-size:15px}.hero-buttons{flex-direction:column;width:100%;max-width:320px;margin:0 auto}.btn-primary,.btn-secondary{width:100%;text-align:center;padding:14px 22px}.stats-container{grid-template-columns:repeat(2,1fr);padding:35px 15px}.stat-item span{font-size:32px}.stat-item p{font-size:13px}.media-grid{grid-template-columns:1fr}.media-item{aspect-ratio:16/10}.modal-content{padding:25px 20px}.modal-content h2{font-size:22px;padding-right:35px}[dir="rtl"] .modal-content h2{padding-right:0;padding-left:35px}.modal-close{font-size:28px;top:10px;right:15px}[dir="rtl"] .modal-close{right:auto;left:15px}.footer-grid{grid-template-columns:1fr;gap:28px;text-align:center}.form-group input,.form-group textarea,.form-group select{padding:12px;font-size:15px}.blog-meta{gap:12px;font-size:13px}}
 @media(max-width:400px){.hero h1{font-size:25px}.section-title{font-size:22px}.logo-text{font-size:15px}.logo-container img{height:34px}.logo-container{gap:8px}.stat-item span{font-size:26px}.lang-btn{padding:4px 7px;font-size:10px}}
+/* === MÜŞTERİ YORUMLARI - BEYAZ TEMA DÜZELTMESİ === */
+section[style*="#111827"] {
+    background: #F1F5F9 !important;
+}
+section[style*="#111827"] .card-3d {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-color);
+}
+section[style*="#111827"] .card-3d:hover {
+    background: #EFF6FF !important;
+}
+section[style*="#111827"] .card-3d p[style*="color:#fff"],
+section[style*="#111827"] .card-3d p[style*="color: #fff"] {
+    color: var(--text-muted) !important;
+}
+section[style*="#111827"] .card-3d p {
+    color: var(--text-muted) !important;
+}
