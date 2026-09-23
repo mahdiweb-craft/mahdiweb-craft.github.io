@@ -160,7 +160,7 @@ section[style*="#111827"] .card-3d p[style*="color: #fff"] {
 section[style*="#111827"] .card-3d p {
     color: var(--text-muted) !important;
 }
-/* === HERO VIDEO ARKA PLAN === *//* === HERO VIDEO ARKA PLAN === */
+/* === HERO VIDEO ARKA PLAN === */
 .hero {
     position: relative;
     min-height: 85vh;
@@ -171,7 +171,8 @@ section[style*="#111827"] .card-3d p {
     text-align: center;
     padding: 60px 20px;
     overflow: hidden;
-    background: none;
+    background: transparent !important;
+    background-image: none !important;
 }
 
 .hero-video {
@@ -182,6 +183,7 @@ section[style*="#111827"] .card-3d p {
     height: 100%;
     object-fit: cover;
     z-index: 0;
+    pointer-events: none;
 }
 
 .hero-overlay {
@@ -190,8 +192,9 @@ section[style*="#111827"] .card-3d p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(11,17,32,0.75), rgba(11,17,32,0.85));
+    background: rgba(11, 17, 32, 0.65);
     z-index: 1;
+    pointer-events: none;
 }
 
 .hero-content {
@@ -203,27 +206,69 @@ section[style*="#111827"] .card-3d p {
     align-items: center;
     text-align: center;
     width: 100%;
+    background: transparent !important;
 }
 
 .hero h1 {
     color: #FFFFFF !important;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    background: transparent !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    font-size: 48px;
+    font-weight: 800;
+    max-width: 900px;
+    margin-bottom: 22px;
+    line-height: 1.25;
 }
 
-.hero h1 span {
-    background: linear-gradient(135deg, #00A3FF, #66D9FF);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    text-shadow: none;
+.hero h1 .hero-line {
+    background: transparent !important;
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
 }
 
 .hero p {
-    color: rgba(255,255,255,0.9) !important;
-    text-shadow: 0 1px 10px rgba(0,0,0,0.4);
+    color: rgba(255, 255, 255, 0.95) !important;
+    background: transparent !important;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    max-width: 700px;
+    margin-bottom: 35px;
 }
 
+.hero-buttons {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: transparent !important;
+}
+
+@media (max-width: 992px) {
+    .hero h1 { font-size: 40px; }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 75vh;
+        padding: 45px 18px;
+    }
+    .hero-overlay {
+        background: rgba(11, 17, 32, 0.7);
+    }
+    .hero h1 {
+        font-size: 30px;
+    }
+    .hero p {
+        font-size: 15px;
+    }
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+}
 /* Mobil Uyum */
 @media (max-width: 768px) {
     .hero {

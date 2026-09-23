@@ -652,3 +652,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }));
   }
 });
+/* === HERO BAŞLIK ÇEVİRİSİ === */
+function updateHeroTitles(lang) {
+    const heroLines = document.querySelectorAll('.hero-line');
+    if(heroLines.length < 2) return;
+
+    const heroTitles = {
+        tr: ["Geleceği Tasarlıyoruz,", "Kodla Hayata Geçiriyoruz."],
+        en: ["We Design the Future,", "We Bring It to Life with Code."],
+        fa: ["ما آینده را طراحی می‌کنیم،", "آن را با کد زنده می‌کنیم."],
+        ar: ["نصمم المستقبل،", "ونحوّله إلى واقع بالكود."],
+        ru: ["Мы проектируем будущее,", "Оживляем его кодом."]
+    };
+
+    if(heroTitles[lang]) {
+        heroLines[0].textContent = heroTitles[lang][0];
+        heroLines[1].textContent = heroTitles[lang][1];
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('webflux_lang') || 'tr';
+    setTimeout(() => updateHeroTitles(savedLang), 100);
+
+    document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            setTimeout(() => updateHeroTitles(opt.dataset.lang), 100);
+        });
+    });
+});
