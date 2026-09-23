@@ -1,0 +1,27 @@
+{
+  "name": "WebFlux - Profesyonel Web Tasarım Ajansı",
+  "short_name": "WebFlux",
+  "description": "WebFlux: Web tasarım, e-ticaret, SEO ve dijital pazarlama hizmetleri.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1120",
+  "theme_color": "#00A3FF",
+  "orientation": "portrait-primary",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["business", "design", "development"],
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
