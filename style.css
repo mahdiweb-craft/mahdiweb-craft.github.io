@@ -230,3 +230,192 @@ nav a::after{display:none}
     -webkit-backface-visibility: hidden;
     transform-style: preserve-3d;
 }
+/* ============================================== */
+/* === SCROLL ANİMASYONLARI — 3D MOTION PAKETİ === */
+/* ============================================== */
+
+/* Temel durum: başlangıçta görünmez */
+.reveal {
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+}
+
+/* Farklı animasyon tipleri */
+.reveal-up { transform: translate3d(0, 60px, 0); }
+.reveal-down { transform: translate3d(0, -60px, 0); }
+.reveal-left { transform: translate3d(-80px, 0, 0); }
+.reveal-right { transform: translate3d(80px, 0, 0); }
+.reveal-zoom { transform: scale3d(0.85, 0.85, 1); }
+.reveal-rotate { transform: perspective(1000px) rotateX(25deg) translate3d(0, 60px, 0); transform-origin: center bottom; }
+.reveal-flip { transform: perspective(1000px) rotateY(-35deg) translate3d(-60px, 0, 0); transform-origin: center left; }
+.reveal-tilt { transform: perspective(1200px) rotateX(30deg) translate3d(0, 50px, -100px); transform-origin: center top; }
+
+/* Aktif durum: görünür */
+.reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1) perspective(1000px) rotateX(0) rotateY(0);
+}
+
+/* === STAGGER (SIRALI GECİKME) === */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+.reveal-delay-6 { transition-delay: 0.6s; }
+.reveal-delay-7 { transition-delay: 0.7s; }
+.reveal-delay-8 { transition-delay: 0.8s; }
+
+/* === ÖZEL BÖLÜM EFEKTLERİ === */
+
+/* İstatistikler — sayılar ortaya çıktığında hafif büyüme */
+.stats-container.is-visible .stat-item {
+    animation: statPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.stats-container.is-visible .stat-item:nth-child(1) { animation-delay: 0.1s; }
+.stats-container.is-visible .stat-item:nth-child(2) { animation-delay: 0.2s; }
+.stats-container.is-visible .stat-item:nth-child(3) { animation-delay: 0.3s; }
+.stats-container.is-visible .stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes statPop {
+    0% { opacity: 0; transform: translate3d(0, 40px, 0) scale(0.8); }
+    60% { transform: translate3d(0, -8px, 0) scale(1.05); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Hizmetler kartı — flip-in */
+.card-3d.reveal-flip {
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s ease,
+                border-color 0.3s;
+}
+
+/* Proje kartları — 3D derinlikli giriş */
+.project-card.reveal-tilt {
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s;
+}
+
+/* Blog kartları — zoom-in */
+.blog-card.reveal-zoom {
+    transition: opacity 0.8s ease,
+                transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Medya öğeleri — dönerek giriş */
+.media-item.reveal-rotate {
+    transition: opacity 0.8s ease,
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Yorum kartları — hafif yana dönerek */
+.card-3d.reveal-rotate {
+    transition: opacity 0.9s ease,
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* === MİKRO-ETKİLEŞİMLER === */
+
+/* Buton basıldığında */
+.btn-primary:active,
+.btn-secondary:active {
+    transform: translateY(-1px) scale(0.97);
+    transition: transform 0.1s;
+}
+
+/* Buton üzerinde parıltı */
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s;
+}
+.btn-primary:hover::after { left: 150%; }
+
+/* Kart hover'ında hafif 3D kaldırma (mevcut hover'ı güçlendirir) */
+.card-3d,
+.project-card,
+.blog-card {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+/* İkon döndürme efekti */
+.card-3d:hover .card-icon {
+    animation: iconBounce 0.6s ease;
+}
+@keyframes iconBounce {
+    0%, 100% { transform: scale(1) rotate(0); }
+    50% { transform: scale(1.15) rotate(8deg); }
+}
+
+/* Bölüm başlıkları — alt çizgi animasyonu */
+.section-title span {
+    position: relative;
+    display: inline-block;
+}
+
+/* Fotoğraf hover zoom */
+.manager-img-wrapper img,
+.team-img {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+}
+.manager-img-wrapper:hover img {
+    transform: scale(1.05) rotate(-2deg);
+}
+.team-img:hover {
+    transform: scale(1.03);
+}
+
+/* Accordion açılma animasyonu */
+.accordion-body {
+    transition: max-height 0.4s ease, opacity 0.3s, padding 0.3s;
+}
+
+/* Nav linkleri — alt çizgi (zaten var ama yumuşatalım) */
+nav a {
+    transition: color 0.3s, transform 0.3s;
+}
+nav a:hover {
+    transform: translateY(-1px);
+}
+
+/* === HAREKET HASSASİYETİ === */
+@media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .card-3d,
+    .project-card,
+    .blog-card,
+    .media-item,
+    .stat-item,
+    .hero-video,
+    .hero-content {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* === ESKİ TELEFONLAR İÇİN EFEKT AZALTMA === */
+@media (max-width: 480px) {
+    .reveal,
+    .card-3d.reveal-flip,
+    .project-card.reveal-tilt,
+    .media-item.reveal-rotate {
+        transition-duration: 0.5s !important;
+    }
+    .card-3d:hover .card-icon {
+        animation: none;
+    }
+}

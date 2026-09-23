@@ -169,3 +169,260 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateHero();
 })();
+// ==============================================
+// === SCROLL ANİMASYON OBSERVER ===
+// ==============================================
+(function() {
+    // Hareket hassasiyeti olan kullanıcılar için iptal
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Eski tarayıcılarda IntersectionObserver yoksa iptal
+    if(!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target); // Bir kere göster, tekrar gözlemleme (performans)
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Statik .reveal elementleri gözlemle
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Otomatik reveal sınıfı ekleme — sayfa yüklendiğinde
+    function autoReveal() {
+        // Hero hariç, tüm bölümleri bul
+        const sections = document.querySelectorAll('section:not(.hero), footer');
+
+        sections.forEach((section, sIndex) => {
+            // Bölümün kendisi için reveal (farklı tipler)
+            if(!section.classList.contains('reveal') && !section.classList.contains('stats-container')) {
+                const sectionAnimations = ['reveal-up', 'reveal-zoom', 'reveal-tilt', 'reveal-rotate', 'reveal-flip'];
+                const animType = sectionAnimations[sIndex % sectionAnimations.length];
+                // Ama bölümün kendisine değil, çocuklarına uygulayacağız, o yüzden boş bırak
+            }
+
+            // Kartlar ve öğeler için staggered animasyon
+            const cards = section.querySelectorAll(
+                '.card-3d, .project-card, .blog-card, .media-item, .accordion-item, .stat-item'
+            );
+
+            cards.forEach((card, i) => {
+                if(card.classList.contains('reveal')) return;
+
+                // Farklı bölümlere farklı animasyon tipleri
+                let animType = 'reveal-up';
+                if(section.querySelector('.card-3d')) animType = 'reveal-flip';
+                if(section.querySelector('.project-card')) animType = 'reveal-tilt';
+                if(section.querySelector('.blog-card')) animType = 'reveal-zoom';
+                if(section.querySelector('.media-item')) animType = 'reveal-rotate';
+                if(section.querySelector('.accordion-item')) animType = 'reveal-up';
+
+                card.classList.add('reveal', animType);
+
+                // Stagger için gecikme (en fazla 8 kart için)
+                const delay = (i % 8) + 1;
+                card.classList.add('reveal-delay-' + delay);
+
+                observer.observe(card);
+            });
+
+            // Başlıklar için ayrı animasyon
+            const titles = section.querySelectorAll('.section-title');
+            titles.forEach(title => {
+                if(!title.classList.contains('reveal')) {
+                    title.classList.add('reveal', 'reveal-down');
+                    observer.observe(title);
+                }
+            });
+
+            // Paragraflar
+            const paragraphs = section.querySelectorAll('p');
+            paragraphs.forEach(p => {
+                if(!p.classList.contains('reveal') && !p.closest('.card-3d') && !p.closest('.project-card') && !p.closest('.blog-card')) {
+                    p.classList.add('reveal', 'reveal-up');
+                    observer.observe(p);
+                }
+            });
+        });
+
+        // Manager ve Team bölümleri (özel slide)
+        const managerSection = document.querySelector('.manager-section');
+        if(managerSection) {
+            const img = managerSection.querySelector('.manager-img-wrapper');
+            const text = managerSection.querySelector('.manager-text');
+            if(img && !img.classList.contains('reveal')) {
+                img.classList.add('reveal', 'reveal-left');
+                observer.observe(img);
+            }
+            if(text && !text.classList.contains('reveal')) {
+                text.classList.add('reveal', 'reveal-right');
+                observer.observe(text);
+            }
+        }
+
+        const teamSection = document.querySelector('.team-section');
+        if(teamSection) {
+            const img = teamSection.querySelector('.team-img');
+            const text = teamSection.querySelector('.team-text');
+            if(img && !img.classList.contains('reveal')) {
+                img.classList.add('reveal', 'reveal-left');
+                observer.observe(img);
+            }
+            if(text && !text.classList.contains('reveal')) {
+                text.classList.add('reveal', 'reveal-right');
+                observer.observe(text);
+            }
+        }
+
+        // İstatistik bölümü — trigger için özel sınıf
+        const statsContainer = document.querySelector('.stats-container');
+        if(statsContainer) {
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        statsContainer.classList.add('is-visible');
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            statsObserver.observe(statsContainer);
+        }
+
+        // Review section (yorum formu)
+        const reviewSection = document.querySelector('.review-section .card-3d');
+        if(reviewSection && !reviewSection.classList.contains('reveal')) {
+            reviewSection.classList.add('reveal', 'reveal-up');
+            observer.observe(reviewSection);
+        }
+
+        // CTA bölümü
+        const ctaSections = document.querySelectorAll('.section-container');
+        ctaSections.forEach(sec => {
+            const h2 = sec.querySelector('h2.section-title');
+            if(h2 && h2.textContent.includes('Hayata') && !h2.classList.contains('reveal')) {
+                h2.classList.add('reveal', 'reveal-zoom');
+                observer.observe(h2);
+            }
+        });
+    }
+
+    // Sayfa yüklendiğinde çalıştır
+    if(document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', autoReveal);
+    } else {
+        autoReveal();
+    }
+
+    // Dinamik içerik yüklenirse (modal, ajax) tekrar çalıştır
+    window.addEventListener('load', () => setTimeout(autoReveal, 300));
+})();
+
+// ==============================================
+// === NAV LINKLERİ İÇİN SMOOTH SCROLL ===
+// ==============================================
+(function() {
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if(targetId === '#' || targetId.length < 2) return;
+            const target = document.querySelector(targetId);
+            if(target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+})();
+
+// ==============================================
+// === SAYFA BAŞINA DÖN BUTONU ===
+// ==============================================
+(function() {
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'back-to-top';
+    btn.innerHTML = '↑';
+    btn.setAttribute('aria-label', 'Yukarı çık');
+    btn.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00A3FF, #0055FF);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 22px;
+        font-weight: 700;
+        box-shadow: 0 4px 20px rgba(0, 163, 255, 0.4);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px) scale(0.8);
+        transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `;
+    document.body.appendChild(btn);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if(!ticking) {
+            window.requestAnimationFrame(() => {
+                const shouldShow = window.scrollY > 500;
+                if(shouldShow) {
+                    btn.style.opacity = '1';
+                    btn.style.visibility = 'visible';
+                    btn.style.transform = 'translateY(0) scale(1)';
+                } else {
+                    btn.style.opacity = '0';
+                    btn.style.visibility = 'hidden';
+                    btn.style.transform = 'translateY(20px) scale(0.8)';
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    btn.addEventListener('mouseenter', () => {
+        btn.style.transform = 'translateY(-3px) scale(1.1)';
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translateY(0) scale(1)';
+    });
+})();
+
+// ==============================================
+// === MOBİLDE SADECE === 
+// Buton dokunuş feedback (haptic hissi)
+// ==============================================
+(function() {
+    if(window.innerWidth > 768) return;
+
+    document.querySelectorAll('.btn-primary, .btn-secondary, .project-link').forEach(btn => {
+        btn.addEventListener('touchstart', () => {
+            btn.style.transform = 'scale(0.96)';
+        }, { passive: true });
+        btn.addEventListener('touchend', () => {
+            setTimeout(() => { btn.style.transform = ''; }, 100);
+        }, { passive: true });
+    });
+})();
