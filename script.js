@@ -93,3 +93,79 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// === HERO 3D SCROLL EFFECT ===
+(function() {
+    const hero = document.querySelector('.hero');
+    const heroContent = document.querySelector('.hero-content');
+    const heroVideo = document.querySelector('.hero-video');
+    const heroOverlay = document.querySelector('.hero-overlay');
+    const heroTitle = document.querySelector('.hero h1');
+    const heroText = document.querySelector('.hero p');
+    const heroButtons = document.querySelector('.hero-buttons');
+
+    if(!hero || !heroContent) return;
+
+    hero.style.perspective = '1200px';
+    hero.style.transformStyle = 'preserve-3d';
+
+    let ticking = false;
+
+    function updateHero() {
+        const scrollY = window.scrollY;
+        const heroHeight = hero.offsetHeight;
+        const progress = Math.min(scrollY / heroHeight, 1);
+
+        // Video: yavaşça zoom
+        if(heroVideo) {
+            heroVideo.style.transform = `scale(${1 + progress * 0.35})`;
+        }
+
+        // Overlay: koyulaşır
+        if(heroOverlay) {
+            heroOverlay.style.opacity = String(Math.min(1 + progress * 0.5, 1.3));
+        }
+
+        // İçerik: kameraya doğru yaklaşır + eğilir + kaybolur
+        const contentZ = progress * 400;
+        const rotateX = progress * 22;
+        const contentScale = 1 + progress * 0.18;
+        const contentOpacity = Math.max(1 - progress * 1.4, 0);
+        heroContent.style.transform = `translateZ(${contentZ}px) rotateX(${-rotateX}deg) scale(${contentScale})`;
+        heroContent.style.opacity = String(contentOpacity);
+
+        // Başlık: patlar, bulanıklaşır, uçar
+        if(heroTitle) {
+            const titleZ = progress * 650;
+            const titleScale = 1 + progress * 0.55;
+            const titleBlur = progress * 10;
+            heroTitle.style.transform = `translateZ(${titleZ}px) scale(${titleScale})`;
+            heroTitle.style.filter = `blur(${titleBlur}px)`;
+            heroTitle.style.opacity = String(Math.max(1 - progress * 1.6, 0));
+        }
+
+        // Açıklama metni: orta hızda uçar
+        if(heroText) {
+            heroText.style.transform = `translateZ(${progress * 280}px) translateY(${-progress * 35}px)`;
+            heroText.style.opacity = String(Math.max(1 - progress * 1.8, 0));
+            heroText.style.filter = `blur(${progress * 7}px)`;
+        }
+
+        // Butonlar: en önde, biraz aşağı kayar
+        if(heroButtons) {
+            heroButtons.style.transform = `translateZ(${progress * 120}px) translateY(${progress * 45}px)`;
+            heroButtons.style.opacity = String(Math.max(1 - progress * 2, 0));
+        }
+    }
+
+    window.addEventListener('scroll', () => {
+        if(!ticking) {
+            window.requestAnimationFrame(() => {
+                updateHero();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+
+    updateHero();
+})();

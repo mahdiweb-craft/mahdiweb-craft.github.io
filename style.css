@@ -217,3 +217,16 @@ nav a::after{display:none}
 .stat-item span{font-size:26px}
 .lang-btn{padding:4px 7px;font-size:10px}
 }
+/* === HERO 3D SCROLL PERFORMANS === */
+.hero,
+.hero-content,
+.hero h1,
+.hero p,
+.hero-buttons,
+.hero-video,
+.hero-overlay {
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
