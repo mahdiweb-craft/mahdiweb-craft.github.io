@@ -302,3 +302,345 @@ nav a::after{display:none}
 .stat-item p{font-size:11px}
 .lang-btn{padding:4px 7px;font-size:10px}
 }
+/* ============ FİYATLANDIRMA PAKETLERİ ============ */
+.pricing-section{
+    background:linear-gradient(135deg,#F8FAFC 0%,#EFF6FF 100%);
+    padding:90px 20px;
+    position:relative;
+    overflow:hidden;
+}
+.pricing-section::before{
+    content:'';
+    position:absolute;
+    top:-150px;
+    right:-150px;
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle,rgba(0,163,255,0.08),transparent 70%);
+    border-radius:50%;
+    pointer-events:none;
+}
+.pricing-section::after{
+    content:'';
+    position:absolute;
+    bottom:-200px;
+    left:-100px;
+    width:450px;
+    height:450px;
+    background:radial-gradient(circle,rgba(0,85,255,0.06),transparent 70%);
+    border-radius:50%;
+    pointer-events:none;
+}
+.pricing-header{
+    text-align:center;
+    max-width:820px;
+    margin:0 auto 60px;
+    position:relative;
+    z-index:2;
+}
+.pricing-subtitle{
+    color:var(--text-muted);
+    font-size:17px;
+    line-height:1.7;
+    max-width:640px;
+    margin:0 auto;
+    padding:0 10px;
+}
+.pricing-list{
+    max-width:1000px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    position:relative;
+    z-index:2;
+}
+
+/* PAKET KARTI */
+.pricing-item{
+    background:#FFFFFF;
+    border-radius:24px;
+    border:1px solid var(--border-color);
+    box-shadow:0 4px 20px rgba(11,17,32,0.05);
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:40px;
+    padding:40px;
+    transition:all .4s cubic-bezier(0.16,1,0.3,1);
+    position:relative;
+    overflow:hidden;
+}
+.pricing-item::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;
+    width:5px;height:100%;
+    background:var(--accent-gradient);
+    opacity:0;
+    transition:opacity .3s;
+}
+.pricing-item:hover{
+    transform:translateY(-6px);
+    border-color:var(--border-color-hover);
+    box-shadow:0 25px 50px rgba(0,85,255,0.12);
+}
+.pricing-item:hover::before{opacity:1}
+
+/* Öne çıkan paket */
+.pricing-item-featured{
+    border:2px solid var(--accent-blue);
+    box-shadow:0 20px 50px rgba(0,163,255,0.15);
+    background:linear-gradient(180deg,#FFFFFF 0%,#F8FCFF 100%);
+}
+.pricing-item-featured::before{opacity:1}
+.pricing-badge{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:var(--accent-gradient);
+    color:#FFFFFF;
+    padding:6px 14px;
+    border-radius:50px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    box-shadow:0 4px 15px rgba(0,163,255,0.35);
+}
+
+/* SOL TARAF */
+.pricing-item-left{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    min-width:0;
+}
+.pricing-item-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+.pricing-icon{
+    width:56px;
+    height:56px;
+    min-width:56px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#EFF6FF,#DBEAFE);
+    border:1px solid rgba(0,163,255,0.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+}
+.pricing-item-header h3{
+    color:var(--accent-navy);
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:4px;
+    line-height:1.2;
+}
+.pricing-tag{
+    color:var(--accent-blue);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+}
+.pricing-desc{
+    color:var(--text-muted);
+    font-size:15px;
+    line-height:1.7;
+}
+.pricing-features{
+    list-style:none;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px 20px;
+    margin-top:6px;
+}
+.pricing-features li{
+    color:var(--text-main);
+    font-size:14px;
+    padding-left:24px;
+    position:relative;
+    line-height:1.5;
+}
+.pricing-features li::before{
+    content:'✓';
+    position:absolute;
+    left:0;
+    top:0;
+    width:18px;
+    height:18px;
+    background:linear-gradient(135deg,#00A3FF,#0055FF);
+    color:#FFFFFF;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    font-weight:900;
+}
+
+/* SAĞ TARAF — FİYAT */
+.pricing-item-right{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    border-left:1px dashed var(--border-color);
+}
+.pricing-price{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    margin-bottom:22px;
+}
+.pricing-from{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--text-soft);
+}
+.pricing-amount{
+    font-size:46px;
+    font-weight:800;
+    line-height:1;
+    background:var(--accent-gradient);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+    letter-spacing:-2px;
+    display:inline-flex;
+    align-items:flex-start;
+}
+.pricing-currency{
+    font-size:24px;
+    font-weight:700;
+    margin-top:4px;
+    margin-left:2px;
+}
+.pricing-note{
+    font-size:12px;
+    color:var(--text-soft);
+    margin-top:4px;
+}
+.pricing-btn{
+    display:inline-block;
+    padding:14px 32px;
+    border-radius:50px;
+    background:#FFFFFF;
+    color:var(--accent-blue);
+    border:2px solid var(--accent-blue);
+    font-weight:700;
+    font-size:15px;
+    text-decoration:none;
+    transition:all .3s;
+    white-space:nowrap;
+}
+.pricing-btn:hover{
+    background:var(--accent-blue);
+    color:#FFFFFF;
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(0,163,255,0.4);
+}
+.pricing-btn-featured{
+    background:var(--accent-gradient);
+    color:#FFFFFF;
+    border-color:transparent;
+    box-shadow:0 4px 15px rgba(0,163,255,0.35);
+}
+.pricing-btn-featured:hover{
+    background:var(--accent-dark);
+    border-color:transparent;
+}
+
+/* ALT CTA */
+.pricing-footer{
+    text-align:center;
+    margin-top:55px;
+    padding:35px 20px;
+    background:#FFFFFF;
+    border-radius:20px;
+    border:1px solid var(--border-color);
+    max-width:1000px;
+    margin-left:auto;
+    margin-right:auto;
+    box-shadow:0 4px 20px rgba(11,17,32,0.04);
+    position:relative;
+    z-index:2;
+}
+.pricing-footer p{
+    color:var(--text-muted);
+    font-size:16px;
+    margin-bottom:20px;
+}
+.pricing-footer p strong{
+    color:var(--accent-navy);
+}
+
+/* RESPONSIVE */
+@media(max-width:992px){
+    .pricing-item{
+        grid-template-columns:1fr;
+        gap:25px;
+        padding:35px;
+    }
+    .pricing-item-right{
+        border-left:none;
+        border-top:1px dashed var(--border-color);
+        padding-top:25px;
+        padding-left:0;
+        padding-right:0;
+        flex-direction:row;
+        justify-content:space-between;
+        align-items:center;
+    }
+    .pricing-price{
+        align-items:flex-start;
+        margin-bottom:0;
+        text-align:left;
+    }
+    .pricing-amount{font-size:40px}
+    .pricing-features{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+    .pricing-section{padding:60px 18px}
+    .pricing-header{margin-bottom:40px}
+    .pricing-subtitle{font-size:15px}
+    .pricing-list{gap:18px}
+    .pricing-item{padding:28px 22px;border-radius:20px;gap:20px}
+    .pricing-item:hover{transform:translateY(-3px)}
+    .pricing-badge{top:14px;right:14px;padding:4px 10px;font-size:10px;letter-spacing:1px}
+    .pricing-icon{width:48px;height:48px;min-width:48px;border-radius:12px;font-size:22px}
+    .pricing-item-header h3{font-size:18px}
+    .pricing-tag{font-size:11px;letter-spacing:1px}
+    .pricing-desc{font-size:14px}
+    .pricing-features{grid-template-columns:1fr;gap:8px}
+    .pricing-features li{font-size:13.5px;padding-left:22px}
+    .pricing-features li::before{width:16px;height:16px;font-size:9px}
+    .pricing-item-right{
+        flex-direction:column;
+        align-items:stretch;
+        text-align:center;
+        padding-top:20px;
+        gap:16px;
+    }
+    .pricing-price{align-items:center;text-align:center}
+    .pricing-amount{font-size:38px}
+    .pricing-btn{width:100%;padding:14px 22px;text-align:center}
+    .pricing-footer{padding:28px 20px;margin-top:35px;border-radius:16px}
+    .pricing-footer p{font-size:14px;margin-bottom:16px}
+}
+@media(max-width:400px){
+    .pricing-item{padding:24px 18px}
+    .pricing-icon{width:42px;height:42px;min-width:42px;font-size:20px}
+    .pricing-item-header h3{font-size:16px}
+    .pricing-amount{font-size:32px}
+    .pricing-currency{font-size:18px}
+    .pricing-badge{font-size:9px;padding:3px 8px}
+}
