@@ -1,0 +1,71 @@
+WEBFLUX WEB TASARIM HİZMET SÖZLEŞMESİ
+
+1. TARAFLAR
+
+Hizmet Veren (Yüklenici): WebFlux
+Adres: Oruçreis Mah. 550. Sok. 34235 Esenler / İstanbul
+E-posta: connect.webflux@gmail.com
+Telefon: +90 538 899 88 51
+
+Müşteri: _________________________________________
+Adres: ___________________________________________
+E-posta: _________________________________________
+Telefon: _________________________________________
+
+2. SÖZLEŞMENİN KONUSU
+İşbu sözleşme, Yüklenici tarafından Müşteri'ye sunulacak olan web tasarım, e-ticaret kurulumu, SEO ve dijital pazarlama hizmetlerinin kapsamını, tarafların hak ve yükümlülüklerini, ödeme koşullarını ve teslim sürecini belirlemek amacıyla düzenlenmiştir.
+
+3. HİZMET KAPSAMI
+Yüklenici, Müşteri ile mutabık kalınan paket kapsamında aşağıdaki hizmetleri sunmayı taahhüt eder:
+- Web sitesi tasarımı ve kodlaması
+- Mobil uyumlu (responsive) yapı
+- SEO uyumlu altyapı
+- Yönetim paneli kurulumu
+- Domain ve hosting yönlendirmesi
+- Ödeme ve kargo entegrasyonu (e-ticaret paketlerinde)
+
+4. ÖDEME KOŞULLARI
+4.1. Toplam proje bedeli taraflarca kararlaştırılan tutardır.
+4.2. Proje başlangıcında toplam bedelin %50'si (yüzde ellisi) depozito olarak ödenir.
+4.3. Kalan %50'si (yüzde ellisi) proje teslimi ve Müşteri onayı sonrasında ödenir.
+4.4. Ödemeler banka havalesi/EFT veya kredi kartı ile yapılabilir.
+4.5. Ödemeler TL para birimi üzerinden gerçekleştirilir.
+
+5. TESLİM SÜRESİ
+5.1. Kurumsal web sitesi projeleri: 7-10 iş günü
+5.2. E-ticaret projeleri: 15-20 iş günü
+5.3. Teslim süresi, depozito ödemesinin Yüklenici hesabına geçtiği tarihten itibaren başlar.
+
+6. REVİZYON HAKKI
+6.1. Müşteri, teslim edilen tasarım üzerinde 2 (iki) tur revizyon hakkına sahiptir.
+6.2. Ek revizyon talepleri ek ücretlendirmeye tabidir.
+
+7. FİKRİ MÜLKİYET
+7.1. Proje tamamlanıp ödeme eksiksiz yapıldıktan sonra, projeye ait tasarım ve kodların kullanım hakkı Müşteri'ye aittir.
+7.2. Yüklenici, tamamlanan projeyi portfolyosunda referans olarak sergileme hakkını saklı tutar.
+
+8. GİZLİLİK
+8.1. Yüklenici, Müşteri'ye ait ticari bilgileri ve verileri üçüncü taraflarla paylaşmayacağını taahhüt eder.
+8.2. Müşteri tarafından sağlanan içerik, görsel ve metinlerin yasal sorumluluğu Müşteri'ye aittir.
+
+9. FESİH VE İADE
+9.1. Proje başlangıcından sonra Müşteri tarafından iptal edilmesi durumunda depozito iade edilmez.
+9.2. Yüklenici, mücbir sebepler dışında projeyi teslim edemezse depozito iade edilir.
+
+10. GARANTİ VE DESTEK
+10.1. Proje tesliminden sonra 1 (bir) ay boyunca yazılım hatalarına karşı ücretsiz destek verilir.
+10.2. Hosting, domain ve üçüncü taraf servis kaynaklı sorunlar garanti kapsamı dışındadır.
+
+11. UYUŞMAZLIK ÇÖZÜMÜ
+İşbu sözleşmeden doğacak uyuşmazlıklarda İstanbul Mahkemeleri ve İcra Daireleri yetkilidir.
+
+12. YÜRÜRLÜK
+İşbu sözleşme 12 (on iki) maddeden oluşmakta olup, taraflarca okunarak kabul edilmiş ve iki nüsha olarak imzalanmıştır.
+
+YÜKLENİCİ: WebFlux
+Tarih: ___/___/______
+İmza: ___________________
+
+MÜŞTERİ: ___________________________
+Tarih: ___/___/______
+İmza: ___________________
