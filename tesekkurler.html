@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#0B1120">
+<title>Mesajınız Alındı | WebFlux</title>
+<meta name="robots" content="noindex,follow">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.thankyou-section{
+    min-height:calc(100vh - 200px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+    background:linear-gradient(135deg,#F8FAFC 0%,#EFF6FF 100%);
+    text-align:center;
+}
+.thankyou-box{
+    background:#FFFFFF;
+    border-radius:24px;
+    padding:60px 40px;
+    max-width:600px;
+    width:100%;
+    border:1px solid var(--border-color);
+    box-shadow:0 20px 60px rgba(11,17,32,0.08);
+}
+.thankyou-icon{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#00A3FF,#0055FF);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 30px;
+    font-size:44px;
+    color:#FFFFFF;
+    box-shadow:0 10px 30px rgba(0,163,255,0.35);
+    animation:checkPop .6s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes checkPop{
+    0%{transform:scale(0);opacity:0}
+    60%{transform:scale(1.15)}
+    100%{transform:scale(1);opacity:1}
+}
+.thankyou-box h1{
+    color:var(--accent-navy);
+    font-size:32px;
+    font-weight:800;
+    margin-bottom:15px;
+    line-height:1.2;
+}
+.thankyou-box p{
+    color:var(--text-muted);
+    font-size:16px;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+.thankyou-buttons{
+    display:flex;
+    gap:14px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+@media(max-width:600px){
+    .thankyou-box{padding:40px 25px;border-radius:20px}
+    .thankyou-icon{width:70px;height:70px;font-size:34px;margin-bottom:22px}
+    .thankyou-box h1{font-size:24px}
+    .thankyou-box p{font-size:15px}
+    .thankyou-buttons{flex-direction:column}
+    .thankyou-buttons .btn-primary,
+    .thankyou-buttons .btn-secondary{width:100%;text-align:center}
+}
+</style>
+</head>
+<body>
+<header>
+<a href="index.html" class="logo-container"><img src="logo.png" alt="WebFlux"><div class="logo-text">WEB<span>FLUX</span></div></a>
+<button class="menu-toggle">☰</button>
+<nav>
+<a href="index.html">Ana Sayfa</a>
+<a href="hakkimizda.html">Hakkımızda</a>
+<a href="hizmetler.html">Hizmetler</a>
+<a href="projeler.html">Projeler</a>
+<a href="blog.html">Blog</a>
+<a href="iletisim.html">İletişim</a>
+</nav>
+<div class="lang-selector"><button class="lang-btn" id="langToggle"><span id="currentLangLabel">TR</span> ▾</button><div class="lang-dropdown" id="langDropdown">
+<button class="lang-option" data-lang="tr">🇹🇷 Türkçe</button>
+<button class="lang-option" data-lang="en">🇬🇧 English</button>
+<button class="lang-option" data-lang="fa">🇮🇷 فارسی</button>
+<button class="lang-option" data-lang="ar">🇸🇦 العربية</button>
+<button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+</div></div>
+</header>
+
+<section class="thankyou-section">
+    <div class="thankyou-box">
+        <div class="thankyou-icon">✓</div>
+        <h1>Mesajınız Alındı!</h1>
+        <p>Bizimle iletişime geçtiğiniz için teşekkür ederiz. Ekibimiz en kısa sürede (genellikle 24 saat içinde) size geri dönüş yapacaktır.</p>
+        <div class="thankyou-buttons">
+            <a href="index.html" class="btn-primary">Ana Sayfaya Dön</a>
+            <a href="projeler.html" class="btn-secondary">Projelerimizi İncele</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+<div class="footer-grid">
+<div class="footer-col">
+<div class="logo-container" style="margin-bottom:18px"><img src="logo.png" alt="WebFlux" style="height:50px"><div class="logo-text">WEB<span>FLUX</span></div></div>
+<p>Dijital dünyada markanızı bir adım öne taşıyacak, modern ve SEO uyumlu web siteleri tasarlıyoruz.</p>
+</div>
+<div class="footer-col">
+<h4>Hızlı Linkler</h4>
+<a href="index.html">Ana Sayfa</a>
+<a href="hakkimizda.html">Hakkımızda</a>
+<a href="hizmetler.html">Hizmetler</a>
+<a href="projeler.html">Projeler</a>
+<a href="blog.html">Blog</a>
+<a href="sozlesme.html" style="color:var(--accent-blue);font-weight:600">Sözleşme</a>
+</div>
+<div class="footer-col">
+<h4>Hizmetlerimiz</h4>
+<a href="hizmetler.html">Web Tasarım</a>
+<a href="hizmetler.html">E-Ticaret</a>
+<a href="hizmetler.html">SEO & Pazarlama</a>
+<a href="hizmetler.html">Domain & Hosting</a>
+</div>
+<div class="footer-col">
+<h4>İletişim</h4>
+<a href="mailto:connect.webflux@gmail.com">connect.webflux@gmail.com</a>
+<a href="tel:+905388998851">+90 538 899 88 51</a>
+</div>
+</div>
+<div class="footer-bottom"><p>&copy; 2026 WebFlux.com.tr - Tüm Hakları Saklıdır.</p></div>
+</footer>
+<script src="lang.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

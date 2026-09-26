@@ -46,43 +46,67 @@ gtag('config', 'G-5HSKSWRNPC');
 </div></div>
 </header>
 
-<section class="section-container" style="margin-top:40px;max-width:1000px">
-<h1 class="section-title" data-i18n="contact_title">Bize Ulaşın</h1>
-<div class="grid-3" style="grid-template-columns:1fr 2fr">
-<div class="card-3d">
-<h3 data-i18n="contact_info_t">İletişim Bilgilerimiz</h3>
-<p style="margin-top:20px"><strong style="color:var(--accent-blue)" data-i18n="contact_email_l">E-posta:</strong><br>connect.webflux@gmail.com</p>
-<p><strong style="color:var(--accent-blue)" data-i18n="contact_phone_l">Telefon:</strong><br>+90 538 899 88 51</p>
-<p><strong style="color:var(--accent-blue)" data-i18n="contact_address_l">Adres:</strong><br><span data-i18n="contact_address">İstanbul, Türkiye</span></p>
-<p style="margin-top:30px;color:var(--text-muted)" data-i18n="contact_social">Sosyal medya hesaplarımızdan da bize ulaşabilirsiniz.</p>
-<div style="margin-top:20px;display:flex;flex-direction:column;gap:12px">
-<a href="https://www.instagram.com/webflux.tr?stkn=MTRya2tkdmo5ZDlkMw==" target="_blank" style="color:var(--accent-blue);text-decoration:none;font-weight:600">Instagram: @webflux.tr</a>
-<a href="https://www.fiverr.com/mtfreelanc" target="_blank" style="color:var(--accent-blue);text-decoration:none;font-weight:600">Fiverr: mtfreelanc</a>
-</div>
-</div>
-<div class="card-3d">
-<h3 data-i18n="contact_form_t">Projenizi Anlatın</h3>
-<form name="contact" method="POST" data-netlify="true" style="margin-top:20px">
-<input type="hidden" name="form-name" value="contact"/>
-<div class="form-group"><label data-i18n="contact_name">Adınız Soyadınız</label><input type="text" name="name" required></div>
-<div class="form-group"><label data-i18n="contact_email">E-posta Adresiniz</label><input type="email" name="email" required></div>
-<div class="form-group"><label data-i18n="contact_phone">Telefon Numaranız</label><input type="tel" name="phone"></div>
-<div class="form-group"><label data-i18n="contact_service">Hizmet Seçiniz</label>
-<select name="service" required>
-<option value="" data-i18n="contact_service_ph">Bir hizmet seçin</option>
-<option value="Web Tasarım" data-i18n="contact_svc_web">Web Tasarım</option>
-<option value="E-Ticaret" data-i18n="contact_svc_eco">E-Ticaret</option>
-<option value="SEO" data-i18n="contact_svc_seo">SEO</option>
-<option value="Mobil Uygulama" data-i18n="contact_svc_mobile">Mobil Uygulama</option>
-<option value="Logo Tasarım" data-i18n="contact_svc_logo">Logo Tasarım</option>
-<option value="Diğer" data-i18n="contact_svc_other">Diğer</option>
-</select>
-</div>
-<div class="form-group"><label data-i18n="contact_message">Projeniz Hakkında</label><textarea name="message" rows="5" required data-i18n-ph="contact_message_ph" placeholder="Projenizden kısaca bahsedin..."></textarea></div>
-<button type="submit" class="btn-primary" style="width:100%" data-i18n="contact_submit">Mesajı Gönder</button>
-</form>
-</div>
-</div>
+<section class="contact-section">
+    <div class="contact-wrapper">
+
+        <div class="contact-info">
+            <div class="contact-label">BİZE ULAŞIN</div>
+            <h1 class="contact-title">Hemen <span>Teklif Alın</span></h1>
+            <p class="contact-desc">Web tasarım, e-ticaret veya SEO hizmetlerimiz için bizimle iletişime geçin. Türkiye'nin her yerine uzaktan hizmet veriyoruz.</p>
+
+            <a href="tel:+905388998851" class="contact-phone">+90 538 899 88 51</a>
+
+            <div class="contact-details">
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div class="contact-detail-text">Oruçreis Mah. 550. Sok. 34235 Esenler / İstanbul</div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="contact-detail-text">Pazartesi – Cumartesi: 09:00 – 18:00</div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <a href="mailto:connect.webflux@gmail.com" class="contact-detail-text contact-detail-link">connect.webflux@gmail.com</a>
+                </div>
+            </div>
+
+            <div class="contact-buttons">
+                <a href="tel:+905388998851" class="contact-btn contact-btn-primary">Bizi Arayın</a>
+                <a href="https://wa.me/905388998851" target="_blank" rel="noopener" class="contact-btn contact-btn-secondary">WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="contact-form-card">
+            <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="75bd7e52-a707-40e3-b568-65b7ce93a207">
+                <input type="hidden" name="subject" value="WebFlux Sitesinden Yeni Mesaj">
+                <input type="hidden" name="from_name" value="WebFlux İletişim Formu">
+                <input type="hidden" name="redirect" value="https://webflux.com.tr/tesekkurler.html">
+
+                <div class="contact-form-group">
+                    <input type="text" name="name" placeholder="Adınız" required>
+                </div>
+                <div class="contact-form-group">
+                    <input type="email" name="email" placeholder="E-posta" required>
+                </div>
+                <div class="contact-form-group">
+                    <input type="text" name="subject" placeholder="Konu (örn: Web Tasarım / E-Ticaret)">
+                </div>
+                <div class="contact-form-group">
+                    <textarea name="message" rows="5" placeholder="Mesajınız..." required></textarea>
+                </div>
+                <button type="submit" class="contact-submit">Gönder <span>→</span></button>
+            </form>
+        </div>
+
+    </div>
 </section>
 
 <footer>
