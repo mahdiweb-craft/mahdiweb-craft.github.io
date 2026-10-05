@@ -98,7 +98,7 @@ const translations = {
     p11_s:"Spor & Fitness",p11_t:"FitLifeGym.com",p11_d:"Üyelik paketleri, antrenör tanıtımları ve ders programlarıyla dinamik spor salonu sitesi.",
     blog_page_title:"Blog Yazıları",
     blog_read:"Devamını Oku →",
-    b1_t:"2024 Web Tasarım Trendleri",b1_d:"Bu yıl öne çıkan 3D öğeler, koyu mod ve mikro animasyonlar hakkında her şey.",
+    b1_t:"2025 Web Tasarım Trendleri",b1_d:"Bu yıl öne çıkan 3D öğeler, koyu mod ve mikro animasyonlar hakkında her şey.",
     b2_t:"E-Ticaret Siteniz Neden Yavaş?",b2_d:"Hız, dönüşüm oranını doğrudan etkiler. Sitenizi hızlandırmanın 5 kolay yolu.",
     b3_t:"SEO'da 2024 Algoritma Güncellemeleri",b3_d:"Google'ın son güncellemeleri ışığında sitenizi nasıl optimize etmelisiniz?",
     b4_t:"Mobil Uyumluluk Neden Şart?",b4_d:"Kullanıcıların %70'i mobilden giriyor. Mobil uyumlu olmayan siteler kaybediyor.",
