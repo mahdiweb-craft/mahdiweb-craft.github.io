@@ -4,6 +4,7 @@ import requests
 from datetime import datetime
 import re
 import sys
+import json
 
 def get_latest_news():
     feeds = [
@@ -27,7 +28,8 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    # DEĞİŞİKLİK BURADA: gemini-1.5-flash yerine gemini-pro kullanıyoruz
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
     
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
@@ -37,15 +39,20 @@ def generate_unique_blog(news_data):
     {news_data}
     
     Görevin: Bu haberlerden ilham alarak, tamamen özgün, akıcı ve profesyonel bir blog yazısı yaz.
-    Yazı en az 600 kelime olmalı. İşletmelerin bu gelişmelerden nasıl faydalanabileceğine dair stratejik yorumlar ekle.
+    İşletmelerin bu gelişmelerden nasıl faydalanabileceğine dair stratejik yorumlar ekle.
     
-    Çıktıyı SADECE şu formatta ver, başka hiçbir şey yazma:
-    TITLE: [Başlık]
-    CONTENT: [HTML formatında paragraflar ve listeler içeren içerik]
-    IMAGE_QUERY: [Görsel arama terimi, örn: web design]
+    Sadece ve sadece aşağıdaki formatta geçerli bir JSON objesi döndür. Başka hiçbir metin yazma, markdown kullanma:
+    {{
+      "title": "Blog Başlığı",
+      "content": "<p>HTML paragraf</p><h3>Alt Başlık</h3><p>Devamı...</p>",
+      "image_query": "web design"
+    }}
     """
 
-    data = {"contents": [{"parts": [{"text": prompt}]}]}
+    data = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"responseMimeType": "application/json"}
+    }
     
     try:
         response = requests.post(url, json=data)
@@ -55,22 +62,19 @@ def generate_unique_blog(news_data):
             print("Gemini API Hatası Döndürdü:", response_data)
             sys.exit(1)
             
-        result = response_data["candidates"][0]["content"]["parts"][0]["text"]
+        result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
         
-        title_match = re.search(r"TITLE:\s*(.*)", result)
-        content_match = re.search(r"CONTENT:\s*(.*?)(?=IMAGE_QUERY:|$)", result, re.DOTALL)
-        image_match = re.search(r"IMAGE_QUERY:\s*(.*)", result)
-
-        if title_match and content_match and image_match:
+        try:
+            post_data = json.loads(result_text)
             return {
-                "title": title_match.group(1).strip(),
-                "content": content_match.group(1).strip(),
-                "image_query": image_match.group(1).strip(),
+                "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
+                "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
+                "image_query": post_data.get("image_query", "technology"),
                 "date": datetime.now().strftime("%d.%m.%Y")
             }
-        else:
-            print("HATA: Yapay zeka istenen formatta yanıt vermedi. Gelen yanıt:")
-            print(result)
+        except json.JSONDecodeError:
+            print("HATA: Yapay zeka geçerli bir JSON döndürmedi. Gelen yanıt:")
+            print(result_text)
             sys.exit(1)
             
     except Exception as e:
@@ -87,7 +91,6 @@ def add_to_blog_html(post):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    # Sabit bir yedek görsel
     image_url = f"https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop"
 
     new_card = f'''
