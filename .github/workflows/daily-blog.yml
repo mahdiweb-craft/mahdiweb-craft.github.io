@@ -1,0 +1,38 @@
+name: Günlük Otomatik Blog
+
+on:
+  schedule:
+    # Her gün saat 04:00 UTC (Türkiye saatiyle 07:00) çalışır
+    - cron: '0 4 * * *'
+  workflow_dispatch: # Manuel çalıştırmak için
+
+permissions:
+  contents: write
+
+jobs:
+  update-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Çek
+        uses: actions/checkout@v4
+
+      - name: Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Gerekli Kütüphaneleri Yükle
+        run: pip install requests feedparser
+
+      - name: Betiği Çalıştır
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/auto_blog.py
+
+      - name: Değişiklikleri Kaydet ve Gönder
+        run: |
+          git config --global user.name "WebFlux Bot"
+          git config --global user.email "bot@webflux.com.tr"
+          git add blog.html
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Günlük Otomatik Blog Eklendi"
+          git push
