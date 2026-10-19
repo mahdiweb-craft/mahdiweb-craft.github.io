@@ -28,8 +28,8 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    # DEĞİŞİKLİK: Model adı 'gemini-2.5-flash' olarak güncellendi ve API sürümü 'v1' yapıldı
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={api_key}"
+    # DÜZELTME: Model adı 'gemini-3.8-flash' olarak güncellendi
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={api_key}"
     
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
