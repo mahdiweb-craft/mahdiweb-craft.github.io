@@ -2,33 +2,67 @@ name: Haftalık Site Sağlık Raporu
 
 on:
   schedule:
-    - cron: '0 6 * * 1' # Her Pazartesi 09:00 TR
+    - cron: '0 6 * * 1'   # Her Pazartesi 06:00 UTC = 09:00 TR
   workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
 
 jobs:
   health-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Site Erişim Kontrolü
-        id: check
+      - name: Ana Sayfa Erişim Kontrolü
+        id: homepage
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://webflux.com.tr/)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -L https://webflux.com.tr/)
+          echo "Ana sayfa HTTP kodu: $STATUS"
           if [ "$STATUS" -ne 200 ]; then
-            echo "Site kapalı veya hata veriyor! Kod: $STATUS"
             echo "status=failed" >> $GITHUB_OUTPUT
           else
-            echo "Site sorunsuz çalışıyor."
             echo "status=success" >> $GITHUB_OUTPUT
           fi
-          
-      - name: Hata Varsa Issue Aç
-        if: steps.check.outputs.status == 'failed'
+
+      - name: Kritik Sayfaları Kontrol Et
+        id: pages
+        run: |
+          FAILED=""
+          for PAGE in blog.html hizmetler.html iletisim.html projeler.html; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -L https://webflux.com.tr/$PAGE)
+            echo "$PAGE -> $CODE"
+            if [ "$CODE" -ne 200 ]; then
+              FAILED="$FAILED\n- $PAGE (HTTP $CODE)"
+            fi
+          done
+          if [ -n "$FAILED" ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "failed_list=$FAILED" >> $GITHUB_OUTPUT
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Sitemap Kontrolü
+        id: sitemap
+        run: |
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" -L https://webflux.com.tr/sitemap.xml)
+          echo "Sitemap HTTP kodu: $CODE"
+          if [ "$CODE" -ne 200 ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Hata Varsa GitHub Issue Aç
+        if: steps.homepage.outputs.status == 'failed' || steps.pages.outputs.status == 'failed' || steps.sitemap.outputs.status == 'failed'
         uses: actions/github-script@v7
         with:
           script: |
+            const date = new Date().toISOString().slice(0,10);
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `🚨 Site Sağlık Uyarısı - ${new Date().toISOString().slice(0,10)}`,
-              body: "Siteye erişilemiyor veya HTTP 200 dışında bir yanıt dönüyor. Lütfen manuel kontrol edin."
+              title: `🚨 Site Sağlık Uyarısı - ${date}`,
+              body: `Site kontrolünde sorun tespit edildi. Detaylar için workflow loglarına bakın:\n${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+              labels: ['site-health']
             });
