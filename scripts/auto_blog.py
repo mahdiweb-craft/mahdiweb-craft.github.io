@@ -5,6 +5,7 @@ from datetime import datetime
 import re
 import sys
 import json
+import random # Rastgele önbellek kırıcı için
 
 def get_latest_news():
     feeds = [
@@ -28,7 +29,6 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    # DÜZELTME: Model adı 'gemini-3.8-flash' olarak güncellendi
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={api_key}"
     
     prompt = f"""
@@ -91,7 +91,12 @@ def add_to_blog_html(post):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    image_url = f"https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop"
+    # SINIRSIZ GÖRSEL SİSTEMİ
+    # Yapay zekanın ürettiği anahtar kelimeyi (image_query) alıp, o kelimeye özel rastgele bir görsel çekiyoruz.
+    # Sonuna eklediğimiz random sayesinde tarayıcı önbelleği kırılır ve her gün farklı görsel gelir.
+    query = post['image_query'].replace(' ', ',')
+    random_id = random.randint(1, 999999)
+    image_url = f"https://loremflickr.com/800/400/{query}?lock={random_id}"
 
     new_card = f'''
     <div class="blog-card card-3d" data-title="{post['title']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="<h3>{post['title']}</h3>{post['content']}">
@@ -107,7 +112,7 @@ def add_to_blog_html(post):
         html = html.replace(marker, marker + new_card, 1)
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(html)
-        print("✅ BAŞARILI: Yeni blog yazısı siteye eklendi.")
+        print(f"✅ BAŞARILI: Yeni blog yazısı ve özgün görsel eklendi. (Görsel Kaynağı: {query})")
     else:
         print("HATA: blog.html içinde '<div class=\"grid-3\">' etiketi bulunamadı!")
         sys.exit(1)
