@@ -5,7 +5,7 @@ from datetime import datetime
 import re
 import sys
 import json
-import random # Rastgele önbellek kırıcı için
+import random
 
 def get_latest_news():
     feeds = [
@@ -44,6 +44,7 @@ def generate_unique_blog(news_data):
     Sadece ve sadece aşağıdaki formatta geçerli bir JSON objesi döndür. Başka hiçbir metin yazma, markdown kullanma:
     {{
       "title": "Blog Başlığı",
+      "description": "Bu blog yazısı için 150-160 karakter arası, SEO uyumlu, dikkat çekici bir meta açıklama.",
       "content": "<p>HTML paragraf</p><h3>Alt Başlık</h3><p>Devamı...</p>",
       "image_query": "web design"
     }}
@@ -68,6 +69,7 @@ def generate_unique_blog(news_data):
             post_data = json.loads(result_text)
             return {
                 "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
+                "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
                 "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
                 "image_query": post_data.get("image_query", "technology"),
                 "date": datetime.now().strftime("%d.%m.%Y")
@@ -82,6 +84,33 @@ def generate_unique_blog(news_data):
         sys.exit(1)
     return None
 
+def notify_indexnow(url):
+    """Bing, Yandex ve diğerlerine yeni URL'yi bildirir."""
+    # BURAYA KENDİ INDEXNOW ANAHTARINI YAZ (örn: a1b2c3d4e5f6...)
+    api_key = "d8b10f2231f84e2b830824e11230e2f6" 
+    
+    if api_key == "d8b10f2231f84e2b830824e11230e2f6":
+        print("⚠️ IndexNow anahtarı girilmedi, bildirim atlandı.")
+        return
+
+    key_location = f"https://webflux.com.tr/{api_key}.txt"
+    
+    payload = {
+        "host": "webflux.com.tr",
+        "key": api_key,
+        "keyLocation": key_location,
+        "urlList": [url]
+    }
+    
+    try:
+        response = requests.post("https://api.indexnow.org/indexnow", json=payload)
+        if response.status_code == 200:
+            print(f"✅ IndexNow bildirimi başarılı: {url}")
+        else:
+            print(f"⚠️ IndexNow hatası: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"❌ IndexNow bağlantı hatası: {e}")
+
 def add_to_blog_html(post):
     file_path = "blog.html"
     if not os.path.exists(file_path):
@@ -91,18 +120,16 @@ def add_to_blog_html(post):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    # SINIRSIZ GÖRSEL SİSTEMİ
-    # Yapay zekanın ürettiği anahtar kelimeyi (image_query) alıp, o kelimeye özel rastgele bir görsel çekiyoruz.
-    # Sonuna eklediğimiz random sayesinde tarayıcı önbelleği kırılır ve her gün farklı görsel gelir.
     query = post['image_query'].replace(' ', ',')
     random_id = random.randint(1, 999999)
     image_url = f"https://loremflickr.com/800/400/{query}?lock={random_id}"
 
+    # Yeni data-description özelliği eklendi
     new_card = f'''
-    <div class="blog-card card-3d" data-title="{post['title']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="<h3>{post['title']}</h3>{post['content']}">
-        <img src="{image_url}" alt="{post['title']}" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px">
+    <div class="blog-card card-3d" data-title="{post['title']}" data-description="{post['description']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="<h3>{post['title']}</h3>{post['content']}">
+        <img src="{image_url}" alt="{post['title']}" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px" loading="lazy">
         <h3>{post['title']}</h3>
-        <p style="color:var(--text-muted);margin-bottom:15px">Web tasarım ve dijital dünyadaki en güncel gelişmeler.</p>
+        <p style="color:var(--text-muted);margin-bottom:15px">{post['description']}</p>
         <button class="project-link blog-read-more">Devamını Oku →</button>
     </div>
     '''
@@ -113,6 +140,9 @@ def add_to_blog_html(post):
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(html)
         print(f"✅ BAŞARILI: Yeni blog yazısı ve özgün görsel eklendi. (Görsel Kaynağı: {query})")
+        
+        # Blog eklendikten sonra IndexNow'a bildir
+        notify_indexnow("https://webflux.com.tr/blog.html")
     else:
         print("HATA: blog.html içinde '<div class=\"grid-3\">' etiketi bulunamadı!")
         sys.exit(1)

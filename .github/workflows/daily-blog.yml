@@ -22,17 +22,24 @@ jobs:
           python-version: '3.10'
 
       - name: Gerekli Kütüphaneleri Yükle
-        run: pip install requests feedparser
+        run: pip install -r requirements.txt
 
-      - name: Betiği Çalıştır
+      - name: Blog Botunu Çalıştır (Gemini + SEO + IndexNow)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/auto_blog.py
+
+      - name: Sitemap ve RSS Feed'i Güncelle
+        run: python scripts/generate_feeds.py
+
+      - name: Yeni Resimleri Optimize Et (WebP)
+        run: python scripts/optimize_images.py
 
       - name: Değişiklikleri Kaydet ve Gönder
         run: |
           git config --global user.name "WebFlux Bot"
           git config --global user.email "bot@webflux.com.tr"
-          git add blog.html
-          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Günlük Otomatik Blog Eklendi"
+          git add blog.html sitemap.xml feed.xml images/ requirements.txt
+          # Eğer değişiklik varsa commit at, yoksa hata verme
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Otomatik: Blog, Sitemap, RSS ve Resim Optimizasyonu"
           git push

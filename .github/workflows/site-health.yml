@@ -1,0 +1,34 @@
+name: Haftalık Site Sağlık Raporu
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Her Pazartesi 09:00 TR
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Site Erişim Kontrolü
+        id: check
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://webflux.com.tr/)
+          if [ "$STATUS" -ne 200 ]; then
+            echo "Site kapalı veya hata veriyor! Kod: $STATUS"
+            echo "status=failed" >> $GITHUB_OUTPUT
+          else
+            echo "Site sorunsuz çalışıyor."
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Hata Varsa Issue Aç
+        if: steps.check.outputs.status == 'failed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Site Sağlık Uyarısı - ${new Date().toISOString().slice(0,10)}`,
+              body: "Siteye erişilemiyor veya HTTP 200 dışında bir yanıt dönüyor. Lütfen manuel kontrol edin."
+            });
