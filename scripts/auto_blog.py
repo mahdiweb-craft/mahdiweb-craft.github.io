@@ -6,7 +6,7 @@ import re
 import sys
 import json
 import random
-import time # Bekleme süreleri için eklendi
+import time
 
 def get_latest_news():
     feeds = [
@@ -30,7 +30,8 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={api_key}"
+    # MODEL ADI DAHA STABİL OLAN 1.5-FLASH İLE DEĞİŞTİRİLDİ
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
     
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
@@ -56,9 +57,9 @@ def generate_unique_blog(news_data):
         "generationConfig": {"responseMimeType": "application/json"}
     }
     
-    # --- YENİ EKLENEN KISIM: OTOMATİK YENİDEN DENEME (RETRY) MEKANİZMASI ---
+    # BEKLEME SÜRELERİ ARTIRILDI (15s, 30s, 60s)
     max_retries = 3
-    retry_delays = [5, 10, 20] # Saniye cinsinden bekleme süreleri
+    retry_delays = [15, 30, 60] 
 
     for attempt in range(max_retries):
         try:
@@ -66,13 +67,12 @@ def generate_unique_blog(news_data):
             response = requests.post(url, json=data)
             response_data = response.json()
             
-            # Eğer API 503 hatası döndürürse (geçici yoğunluk)
             if "error" in response_data and response_data["error"].get("code") == 503:
                 if attempt < max_retries - 1:
                     wait_time = retry_delays[attempt]
                     print(f"⚠️ Gemini sunucuları şu an yoğun (503). {wait_time} saniye sonra tekrar denenecek...")
                     time.sleep(wait_time)
-                    continue # Döngünün bir sonraki adımına geç (tekrar dene)
+                    continue 
                 else:
                     print("❌ HATA: Gemini sunucuları 3 denemeye rağmen yanıt vermedi. Lütfen daha sonra tekrar deneyin.")
                     sys.exit(1)
@@ -98,7 +98,6 @@ def generate_unique_blog(news_data):
                 sys.exit(1)
                 
         except requests.exceptions.RequestException as e:
-            # Ağ hatası vs olursa
             if attempt < max_retries - 1:
                 print(f"⚠️ Bağlantı hatası: {e}. Tekrar denenecek...")
                 time.sleep(retry_delays[attempt])
@@ -110,22 +109,18 @@ def generate_unique_blog(news_data):
     return None
 
 def notify_indexnow(url):
-    """Bing, Yandex ve diğerlerine yeni URL'yi bildirir."""
     api_key = "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN" 
-    
     if api_key == "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN":
         print("⚠️ IndexNow anahtarı girilmedi, bildirim atlandı.")
         return
 
     key_location = f"https://webflux.com.tr/{api_key}.txt"
-    
     payload = {
         "host": "webflux.com.tr",
         "key": api_key,
         "keyLocation": key_location,
         "urlList": [url]
     }
-    
     try:
         response = requests.post("https://api.indexnow.org/indexnow", json=payload)
         if response.status_code == 200:
@@ -144,7 +139,6 @@ def add_to_blog_html(post):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    # Görsel Havuzu (Unsplash garantili)
     IMAGE_POOL = [
         "photo-1620712943543-bcc4688e7485", "photo-1512941937669-90a1b58e7e9c",
         "photo-1550751827-4bd374c3f58b", "photo-1451187580459-43490279c0fa",
