@@ -30,8 +30,8 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    # MODEL ADI EN GÜNCEL VE STABİL SÜRÜMLE DEĞİŞTİRİLDİ
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
+    # v1beta yerine stabil olan v1 sürümüne geçildi
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
     
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
@@ -66,18 +66,20 @@ def generate_unique_blog(news_data):
             response = requests.post(url, json=data)
             response_data = response.json()
             
-            if "error" in response_data and response_data["error"].get("code") == 503:
-                if attempt < max_retries - 1:
+            if "error" in response_data:
+                error_code = response_data["error"].get("code")
+                # 503 (Sunucu yoğun) veya 429 (Kota aşımı) ise tekrar dene
+                if error_code in [503, 429] and attempt < max_retries - 1:
                     wait_time = retry_delays[attempt]
-                    print(f"⚠️ Gemini sunucuları şu an yoğun (503). {wait_time} saniye sonra tekrar denenecek...")
+                    print(f"⚠️ Gemini API şu an yanıt veremiyor (Hata {error_code}). {wait_time} saniye sonra tekrar denenecek...")
                     time.sleep(wait_time)
                     continue 
                 else:
-                    print("❌ HATA: Gemini sunucuları 3 denemeye rağmen yanıt vermedi.")
+                    print(f"❌ Gemini API Hatası: {response_data}")
                     sys.exit(1)
             
             if "candidates" not in response_data:
-                print("Gemini API Hatası Döndürdü:", response_data)
+                print("Beklenmeyen API Yanıtı:", response_data)
                 sys.exit(1)
                 
             result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
@@ -125,7 +127,7 @@ def notify_indexnow(url):
         if response.status_code == 200:
             print(f"✅ IndexNow bildirimi başarılı: {url}")
         else:
-            print(f"⚠️ IndexNow hatası: {response.status_code} - {response.text}")
+            print(f"⚠️ IndexNow hatası: {response.status_code}")
     except Exception as e:
         print(f"❌ IndexNow bağlantı hatası: {e}")
 
