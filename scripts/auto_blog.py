@@ -30,8 +30,8 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    # v1beta yerine stabil olan v1 sürümüne geçildi
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
+    # MODEL ADI GÜNCEL SÜRÜMLE DEĞİŞTİRİLDİ
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={api_key}"
     
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
@@ -68,7 +68,6 @@ def generate_unique_blog(news_data):
             
             if "error" in response_data:
                 error_code = response_data["error"].get("code")
-                # 503 (Sunucu yoğun) veya 429 (Kota aşımı) ise tekrar dene
                 if error_code in [503, 429] and attempt < max_retries - 1:
                     wait_time = retry_delays[attempt]
                     print(f"⚠️ Gemini API şu an yanıt veremiyor (Hata {error_code}). {wait_time} saniye sonra tekrar denenecek...")
