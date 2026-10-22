@@ -6,33 +6,7 @@ import re
 import sys
 import json
 import random
-
-# GARANTİLİ VE KALİTELİ GÖRSEL HAVUZU (Unsplash)
-IMAGE_POOL = [
-    "photo-1620712943543-bcc4688e7485", # Yapay Zeka
-    "photo-1512941937669-90a1b58e7e9c", # Teknoloji / Tablet
-    "photo-1550751827-4bd374c3f58b",    # Siber Güvenlik
-    "photo-1451187580459-43490279c0fa", # Küresel Ağ / 6G
-    "photo-1518770660439-4636190af475", # Devre Kartı
-    "photo-1526374965328-7f61d4dc18c5", # Kod / Matrix
-    "photo-1551288049-bebda4e38f71",    # Analitik Panel
-    "photo-1551434678-e076c223a692",    # Ekip / Yazılım
-    "photo-1498050108023-c5249f4df085", # Kodlama
-    "photo-1517180102446-f3ece451e9d8", # Kod / Laptop
-    "photo-1516321318423-f06f85e504b3", # Laptop Çalışma
-    "photo-1522542550221-31fd19575a2d", # Tasarım Masası
-    "photo-1559028012-481c04fa702d",    # UX Wireframe
-    "photo-1551650975-87deedd944c3",    # UX Tasarım
-    "photo-1517245386807-bb43f82c33c4", # Ekip Toplantısı
-    "photo-1587620962725-abab7fe55159", # Yazılımcı
-    "photo-1467232031835-1c6d5c5b1c9e", # Web Tasarım
-    "photo-1504384308090-c894fdcc538d", # Ofis
-    "photo-1497366216548-37526070297c", # Modern Ofis
-    "photo-1558494949-ef010cbdcc31",    # Sunucu
-    "photo-1544197150-b99a580bb7a8",    # Bulut Bilişim
-    "photo-1507238691740-187a5b1d37b8", # Veri Analizi
-    "photo-1462826303086-329426d1aef5"  # Bilgisayar
-]
+import time # Bekleme süreleri için eklendi
 
 def get_latest_news():
     feeds = [
@@ -72,7 +46,8 @@ def generate_unique_blog(news_data):
     {{
       "title": "Blog Başlığı",
       "description": "Bu blog yazısı için 150-160 karakter arası, SEO uyumlu, dikkat çekici bir meta açıklama.",
-      "content": "<p>HTML paragraf</p><h3>Alt Başlık</h3><p>Devamı...</p>"
+      "content": "<p>HTML paragraf</p><h3>Alt Başlık</h3><p>Devamı...</p>",
+      "image_query": "web design"
     }}
     """
 
@@ -81,37 +56,61 @@ def generate_unique_blog(news_data):
         "generationConfig": {"responseMimeType": "application/json"}
     }
     
-    try:
-        response = requests.post(url, json=data)
-        response_data = response.json()
-        
-        if "candidates" not in response_data:
-            print("Gemini API Hatası Döndürdü:", response_data)
-            sys.exit(1)
-            
-        result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
-        
+    # --- YENİ EKLENEN KISIM: OTOMATİK YENİDEN DENEME (RETRY) MEKANİZMASI ---
+    max_retries = 3
+    retry_delays = [5, 10, 20] # Saniye cinsinden bekleme süreleri
+
+    for attempt in range(max_retries):
         try:
-            post_data = json.loads(result_text)
-            return {
-                "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
-                "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
-                "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
-                "date": datetime.now().strftime("%d.%m.%Y")
-            }
-        except json.JSONDecodeError:
-            print("HATA: Yapay zeka geçerli bir JSON döndürmedi. Gelen yanıt:")
-            print(result_text)
-            sys.exit(1)
+            print(f"Yapay zeka yazıyor... (Deneme {attempt + 1}/{max_retries})")
+            response = requests.post(url, json=data)
+            response_data = response.json()
             
-    except Exception as e:
-        print(f"İstek Hatası: {e}")
-        sys.exit(1)
+            # Eğer API 503 hatası döndürürse (geçici yoğunluk)
+            if "error" in response_data and response_data["error"].get("code") == 503:
+                if attempt < max_retries - 1:
+                    wait_time = retry_delays[attempt]
+                    print(f"⚠️ Gemini sunucuları şu an yoğun (503). {wait_time} saniye sonra tekrar denenecek...")
+                    time.sleep(wait_time)
+                    continue # Döngünün bir sonraki adımına geç (tekrar dene)
+                else:
+                    print("❌ HATA: Gemini sunucuları 3 denemeye rağmen yanıt vermedi. Lütfen daha sonra tekrar deneyin.")
+                    sys.exit(1)
+            
+            if "candidates" not in response_data:
+                print("Gemini API Hatası Döndürdü:", response_data)
+                sys.exit(1)
+                
+            result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
+            
+            try:
+                post_data = json.loads(result_text)
+                return {
+                    "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
+                    "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
+                    "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
+                    "image_query": post_data.get("image_query", "technology"),
+                    "date": datetime.now().strftime("%d.%m.%Y")
+                }
+            except json.JSONDecodeError:
+                print("HATA: Yapay zeka geçerli bir JSON döndürmedi. Gelen yanıt:")
+                print(result_text)
+                sys.exit(1)
+                
+        except requests.exceptions.RequestException as e:
+            # Ağ hatası vs olursa
+            if attempt < max_retries - 1:
+                print(f"⚠️ Bağlantı hatası: {e}. Tekrar denenecek...")
+                time.sleep(retry_delays[attempt])
+                continue
+            else:
+                print(f"❌ İstek Hatası: {e}")
+                sys.exit(1)
+                
     return None
 
 def notify_indexnow(url):
     """Bing, Yandex ve diğerlerine yeni URL'yi bildirir."""
-    # BURAYA KENDİ INDEXNOW ANAHTARINI YAZ (örn: a1b2c3d4e5f6...)
     api_key = "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN" 
     
     if api_key == "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN":
@@ -145,11 +144,24 @@ def add_to_blog_html(post):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    # %100 ÇALIŞAN GÖRSEL SİSTEMİ (Unsplash Havuzundan Rastgele)
+    # Görsel Havuzu (Unsplash garantili)
+    IMAGE_POOL = [
+        "photo-1620712943543-bcc4688e7485", "photo-1512941937669-90a1b58e7e9c",
+        "photo-1550751827-4bd374c3f58b", "photo-1451187580459-43490279c0fa",
+        "photo-1518770660439-4636190af475", "photo-1526374965328-7f61d4dc18c5",
+        "photo-1551288049-bebda4e38f71", "photo-1551434678-e076c223a692",
+        "photo-1498050108023-c5249f4df085", "photo-1517180102446-f3ece451e9d8",
+        "photo-1516321318423-f06f85e504b3", "photo-1522542550221-31fd19575a2d",
+        "photo-1559028012-481c04fa702d", "photo-1551650975-87deedd944c3",
+        "photo-1517245386807-bb43f82c33c4", "photo-1587620962725-abab7fe55159",
+        "photo-1467232031835-1c6d5c5b1c9e", "photo-1504384308090-c894fdcc538d",
+        "photo-1497366216548-37526070297c", "photo-1558494949-ef010cbdcc31",
+        "photo-1544197150-b99a580bb7a8", "photo-1507238691740-187a5b1d37b8",
+        "photo-1462826303086-329426d1aef5"
+    ]
     img_id = random.choice(IMAGE_POOL)
     image_url = f"https://images.unsplash.com/{img_id}?q=80&w=800&auto=format&fit=crop"
 
-    # Yeni data-description özelliği eklendi
     new_card = f'''
     <div class="blog-card card-3d" data-title="{post['title']}" data-description="{post['description']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="<h3>{post['title']}</h3>{post['content']}">
         <img src="{image_url}" alt="{post['title']}" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px" loading="lazy">
@@ -166,7 +178,6 @@ def add_to_blog_html(post):
             f.write(html)
         print(f"✅ BAŞARILI: Yeni blog yazısı ve garantili görsel eklendi.")
         
-        # Blog eklendikten sonra IndexNow'a bildir
         notify_indexnow("https://webflux.com.tr/blog.html")
     else:
         print("HATA: blog.html içinde '<div class=\"grid-3\">' etiketi bulunamadı!")
@@ -176,7 +187,6 @@ if __name__ == "__main__":
     print("Haberler toplanıyor...")
     news = get_latest_news()
     
-    print("Yapay zeka yazıyor...")
     post = generate_unique_blog(news)
     
     if post:
