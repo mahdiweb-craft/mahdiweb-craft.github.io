@@ -30,8 +30,8 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    # MODEL ADI DAHA STABİL OLAN 1.5-FLASH İLE DEĞİŞTİRİLDİ
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    # MODEL ADI EN GÜNCEL VE STABİL SÜRÜMLE DEĞİŞTİRİLDİ
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
     
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
@@ -57,7 +57,6 @@ def generate_unique_blog(news_data):
         "generationConfig": {"responseMimeType": "application/json"}
     }
     
-    # BEKLEME SÜRELERİ ARTIRILDI (15s, 30s, 60s)
     max_retries = 3
     retry_delays = [15, 30, 60] 
 
@@ -74,7 +73,7 @@ def generate_unique_blog(news_data):
                     time.sleep(wait_time)
                     continue 
                 else:
-                    print("❌ HATA: Gemini sunucuları 3 denemeye rağmen yanıt vermedi. Lütfen daha sonra tekrar deneyin.")
+                    print("❌ HATA: Gemini sunucuları 3 denemeye rağmen yanıt vermedi.")
                     sys.exit(1)
             
             if "candidates" not in response_data:
