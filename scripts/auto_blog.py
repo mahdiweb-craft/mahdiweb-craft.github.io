@@ -7,6 +7,33 @@ import sys
 import json
 import random
 
+# GARANTİLİ VE KALİTELİ GÖRSEL HAVUZU (Unsplash)
+IMAGE_POOL = [
+    "photo-1620712943543-bcc4688e7485", # Yapay Zeka
+    "photo-1512941937669-90a1b58e7e9c", # Teknoloji / Tablet
+    "photo-1550751827-4bd374c3f58b",    # Siber Güvenlik
+    "photo-1451187580459-43490279c0fa", # Küresel Ağ / 6G
+    "photo-1518770660439-4636190af475", # Devre Kartı
+    "photo-1526374965328-7f61d4dc18c5", # Kod / Matrix
+    "photo-1551288049-bebda4e38f71",    # Analitik Panel
+    "photo-1551434678-e076c223a692",    # Ekip / Yazılım
+    "photo-1498050108023-c5249f4df085", # Kodlama
+    "photo-1517180102446-f3ece451e9d8", # Kod / Laptop
+    "photo-1516321318423-f06f85e504b3", # Laptop Çalışma
+    "photo-1522542550221-31fd19575a2d", # Tasarım Masası
+    "photo-1559028012-481c04fa702d",    # UX Wireframe
+    "photo-1551650975-87deedd944c3",    # UX Tasarım
+    "photo-1517245386807-bb43f82c33c4", # Ekip Toplantısı
+    "photo-1587620962725-abab7fe55159", # Yazılımcı
+    "photo-1467232031835-1c6d5c5b1c9e", # Web Tasarım
+    "photo-1504384308090-c894fdcc538d", # Ofis
+    "photo-1497366216548-37526070297c", # Modern Ofis
+    "photo-1558494949-ef010cbdcc31",    # Sunucu
+    "photo-1544197150-b99a580bb7a8",    # Bulut Bilişim
+    "photo-1507238691740-187a5b1d37b8", # Veri Analizi
+    "photo-1462826303086-329426d1aef5"  # Bilgisayar
+]
+
 def get_latest_news():
     feeds = [
         "https://webrazzi.com/feed/",
@@ -45,8 +72,7 @@ def generate_unique_blog(news_data):
     {{
       "title": "Blog Başlığı",
       "description": "Bu blog yazısı için 150-160 karakter arası, SEO uyumlu, dikkat çekici bir meta açıklama.",
-      "content": "<p>HTML paragraf</p><h3>Alt Başlık</h3><p>Devamı...</p>",
-      "image_query": "web design"
+      "content": "<p>HTML paragraf</p><h3>Alt Başlık</h3><p>Devamı...</p>"
     }}
     """
 
@@ -71,7 +97,6 @@ def generate_unique_blog(news_data):
                 "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
                 "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
                 "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
-                "image_query": post_data.get("image_query", "technology"),
                 "date": datetime.now().strftime("%d.%m.%Y")
             }
         except json.JSONDecodeError:
@@ -87,9 +112,9 @@ def generate_unique_blog(news_data):
 def notify_indexnow(url):
     """Bing, Yandex ve diğerlerine yeni URL'yi bildirir."""
     # BURAYA KENDİ INDEXNOW ANAHTARINI YAZ (örn: a1b2c3d4e5f6...)
-    api_key = "d8b10f2231f84e2b830824e11230e2f6" 
+    api_key = "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN" 
     
-    if api_key == "d8b10f2231f84e2b830824e11230e2f6":
+    if api_key == "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN":
         print("⚠️ IndexNow anahtarı girilmedi, bildirim atlandı.")
         return
 
@@ -120,9 +145,9 @@ def add_to_blog_html(post):
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
 
-    query = post['image_query'].replace(' ', ',')
-    random_id = random.randint(1, 999999)
-    image_url = f"https://loremflickr.com/800/400/{query}?lock={random_id}"
+    # %100 ÇALIŞAN GÖRSEL SİSTEMİ (Unsplash Havuzundan Rastgele)
+    img_id = random.choice(IMAGE_POOL)
+    image_url = f"https://images.unsplash.com/{img_id}?q=80&w=800&auto=format&fit=crop"
 
     # Yeni data-description özelliği eklendi
     new_card = f'''
@@ -139,7 +164,7 @@ def add_to_blog_html(post):
         html = html.replace(marker, marker + new_card, 1)
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(html)
-        print(f"✅ BAŞARILI: Yeni blog yazısı ve özgün görsel eklendi. (Görsel Kaynağı: {query})")
+        print(f"✅ BAŞARILI: Yeni blog yazısı ve garantili görsel eklendi.")
         
         # Blog eklendikten sonra IndexNow'a bildir
         notify_indexnow("https://webflux.com.tr/blog.html")
