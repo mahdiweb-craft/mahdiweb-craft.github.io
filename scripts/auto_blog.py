@@ -30,9 +30,6 @@ def generate_unique_blog(news_data):
         print("HATA: API Anahtarı bulunamadı!")
         sys.exit(1)
 
-    # YENİ API ANAHTARLARIYLA UYUMLU GÜNCEL MODEL VE UÇ NOKTA
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={api_key}"
-    
     prompt = f"""
     Sen WebFlux adında profesyonel bir web tasarım ajansının uzman yazarısın.
     Aşağıda bugünün web tasarım, e-ticaret ve teknoloji haberleri var.
@@ -57,55 +54,75 @@ def generate_unique_blog(news_data):
         "generationConfig": {"responseMimeType": "application/json"}
     }
     
-    max_retries = 3
+    # YEDEKLİ MODEL LİSTESİ VE DAHA UZUN BEKLEME SÜRELERİ
+    models_to_try = ["gemini-3.6-flash", "gemini-3.5-flash"]
+    max_retries_per_model = 3
+    # Bekleme süreleri: 15s, 30s, 60s (Ana model için)
     retry_delays = [15, 30, 60] 
 
-    for attempt in range(max_retries):
-        try:
-            print(f"Yapay zeka yazıyor... (Deneme {attempt + 1}/{max_retries})")
-            response = requests.post(url, json=data)
-            response_data = response.json()
-            
-            if "error" in response_data:
-                error_code = response_data["error"].get("code")
-                if error_code in [503, 429] and attempt < max_retries - 1:
-                    wait_time = retry_delays[attempt]
-                    print(f"⚠️ Gemini API şu an yanıt veremiyor (Hata {error_code}). {wait_time} saniye sonra tekrar denenecek...")
-                    time.sleep(wait_time)
-                    continue 
-                else:
-                    print(f"❌ Gemini API Hatası: {response_data}")
-                    sys.exit(1)
-            
-            if "candidates" not in response_data:
-                print("Beklenmeyen API Yanıtı:", response_data)
-                sys.exit(1)
-                
-            result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
-            
+    for model_index, model_name in enumerate(models_to_try):
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
+        
+        for attempt in range(max_retries_per_model):
             try:
-                post_data = json.loads(result_text)
-                return {
-                    "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
-                    "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
-                    "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
-                    "image_query": post_data.get("image_query", "technology"),
-                    "date": datetime.now().strftime("%d.%m.%Y")
-                }
-            except json.JSONDecodeError:
-                print("HATA: Yapay zeka geçerli bir JSON döndürmedi. Gelen yanıt:")
-                print(result_text)
-                sys.exit(1)
+                print(f"Yapay zeka yazıyor... (Model: {model_name}, Deneme {attempt + 1}/{max_retries_per_model})")
+                response = requests.post(url, json=data)
+                response_data = response.json()
                 
-        except requests.exceptions.RequestException as e:
-            if attempt < max_retries - 1:
-                print(f"⚠️ Bağlantı hatası: {e}. Tekrar denenecek...")
-                time.sleep(retry_delays[attempt])
-                continue
-            else:
-                print(f"❌ İstek Hatası: {e}")
-                sys.exit(1)
+                if "error" in response_data:
+                    error_code = response_data["error"].get("code")
+                    # 503 (Sunucu yoğun) veya 429 (Limit) ise tekrar dene
+                    if error_code in [503, 429]:
+                        if attempt < max_retries_per_model - 1:
+                            wait_time = retry_delays[attempt]
+                            print(f"⚠️ {model_name} şu an yanıt veremiyor (Hata {error_code}). {wait_time} saniye sonra tekrar denenecek...")
+                            time.sleep(wait_time)
+                            continue 
+                        else:
+                            print(f"❌ {model_name} modeli {max_retries_per_model} denemeye rağmen yanıt vermedi.")
+                            break # Bu modeli bırak, yedek modele geç
+                    else:
+                        print(f"❌ Gemini API Hatası ({model_name}): {response_data}")
+                        sys.exit(1)
                 
+                if "candidates" not in response_data:
+                    print(f"Beklenmeyen API Yanıtı ({model_name}):", response_data)
+                    sys.exit(1)
+                    
+                result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
+                
+                try:
+                    post_data = json.loads(result_text)
+                    print(f"✅ Başarılı! {model_name} modeli ile yazı oluşturuldu.")
+                    return {
+                        "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
+                        "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
+                        "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
+                        "image_query": post_data.get("image_query", "technology"),
+                        "date": datetime.now().strftime("%d.%m.%Y")
+                    }
+                except json.JSONDecodeError:
+                    print(f"HATA: {model_name} geçerli bir JSON döndürmedi. Gelen yanıt:")
+                    print(result_text)
+                    sys.exit(1)
+                    
+            except requests.exceptions.RequestException as e:
+                if attempt < max_retries_per_model - 1:
+                    print(f"⚠️ Bağlantı hatası ({model_name}): {e}. Tekrar denenecek...")
+                    time.sleep(retry_delays[attempt])
+                    continue
+                else:
+                    print(f"❌ İstek Hatası ({model_name}): {e}")
+                    break # Bu modeli bırak, yedek modele geç
+
+        # Eğer kod buraya geldiyse, mevcut model tüm denemelere rağmen başarısız oldu.
+        if model_index < len(models_to_try) - 1:
+            print(f"🔄 Ana model ({model_name}) yanıt vermedi. Yedek modele ({models_to_try[model_index + 1]}) geçiliyor...")
+            time.sleep(5) # Yedek modele geçmeden önce kısa bir mola
+        else:
+            print("❌ Tüm modeller denendi ancak hiçbirinden yanıt alınamadı. Lütfen daha sonra tekrar deneyin.")
+            sys.exit(1)
+
     return None
 
 def notify_indexnow(url):
