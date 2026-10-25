@@ -6,6 +6,12 @@
     <description>Web tasarım, SEO ve dijital pazarlama hakkında güncel yazılar.</description>
     <language>tr</language>
     <item>
+      <title>Dijital Dönüşümün Yeni Yüzü: Yapay Zeka, IoT ve Genişleyen Teknolojik Ekosistemler</title>
+      <link>https://webflux.com.tr/blog.html</link>
+      <pubDate>Sun, 25 Oct 2026 00:00:00 +0300</pubDate>
+      <guid>https://webflux.com.tr/blog.html#20261025</guid>
+    </item>
+    <item>
       <title>Yapay Zeka ve Teknoloji Çağında İşletmeler İçin Dijital Dönüşüm Stratejileri</title>
       <link>https://webflux.com.tr/blog.html</link>
       <pubDate>Sat, 24 Oct 2026 00:00:00 +0300</pubDate>
@@ -118,12 +124,6 @@
       <link>https://webflux.com.tr/blog.html</link>
       <pubDate>Sat, 20 Sep 2025 00:00:00 +0300</pubDate>
       <guid>https://webflux.com.tr/blog.html#20250920</guid>
-    </item>
-    <item>
-      <title>Doğru Domain Nasıl Seçilir?</title>
-      <link>https://webflux.com.tr/blog.html</link>
-      <pubDate>Fri, 15 Aug 2025 00:00:00 +0300</pubDate>
-      <guid>https://webflux.com.tr/blog.html#20250815</guid>
     </item>
   </channel>
 </rss>
