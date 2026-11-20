@@ -1563,3 +1563,463 @@ nav a.active::after {
 .promo-banner {
   background: linear-gradient(135deg, #0B1120 0%, #1a237e 50%, var(--accent-warm-dark) 100%) !important;
 }
+/* ============================================== */
+/* KATMAN 4: SÜSLEME / DEKORASYON === */
+/* ============================================== */
+
+/* "Nasıl Çalışıyoruz" bölümüne büyük numara arkada */
+.grid-4 .card-3d {
+  position: relative;
+  overflow: visible;
+}
+
+.grid-4 .card-3d::before {
+  content: attr(data-info-title);
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 80px;
+  font-weight: 900;
+  background: linear-gradient(135deg, rgba(0, 163, 255, 0.15), rgba(255, 107, 53, 0.08));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  font-family: Inter, sans-serif;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Kart hover'da arkadaki numara renk değiştirsin */
+.grid-4 .card-3d:hover::before {
+  background: linear-gradient(135deg, rgba(0, 163, 255, 0.25), rgba(255, 107, 53, 0.15));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Section aralarına turuncu nokta ayracı */
+.section-container,
+.pricing-section,
+.feature-section,
+.media-section,
+.google-reviews-section {
+  position: relative;
+}
+
+.section-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FF6B35, transparent);
+  border-radius: 3px;
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+}
+
+/* Pricing kartlarına dekoratif köşe */
+.pricing-item {
+  position: relative;
+}
+
+.pricing-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle at 100% 0%, rgba(255, 107, 53, 0.12), transparent 70%);
+  border-radius: 0 28px 0 100%;
+  pointer-events: none;
+}
+
+/* İstatistik sayılarının altına turuncu nokta */
+.stat-item {
+  position: relative;
+}
+
+.stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #FF6B35;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.6);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.stat-item:hover::after {
+  opacity: 1;
+}
+
+/* Google review kartlarına turuncu sol çizgi */
+.google-review-card {
+  border-left: 4px solid transparent;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s !important;
+}
+
+.google-review-card:hover {
+  border-left-color: #FF6B35 !important;
+}
+
+/* Fiyatlı butonlara hafif pulse animasyonu */
+.pricing-btn-featured {
+  animation: btnPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 4px 15px rgba(255, 107, 53, 0.35); }
+  50% { box-shadow: 0 4px 25px rgba(255, 107, 53, 0.6); }
+}
+/* ============================================== */
+/* KATMAN 3: SECTION RİTMİ === */
+/* ============================================== */
+
+/* Öne çıkan section'ları koyu lacivert yap */
+.feature-section {
+  background: linear-gradient(135deg, #0B1120 0%, #1a237e 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(0, 163, 255, 0.25), transparent 70%);
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+.feature-section .feature-text h2,
+.feature-section .feature-text > p,
+.feature-section .feature-list li,
+.feature-section .feature-text h2 span,
+.feature-section .feature-label {
+  color: #FFFFFF !important;
+}
+
+.feature-section .feature-text h2 span {
+  background: linear-gradient(135deg, #66D9FF, #FF6B35) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.feature-section .feature-list li strong {
+  color: #66D9FF !important;
+}
+
+.feature-section .feature-label {
+  color: #FFB380 !important;
+  border-left: 3px solid #FF6B35;
+  padding-left: 12px;
+}
+
+/* Media section da koyu olsun */
+.media-section {
+  background: linear-gradient(135deg, #0B1120 0%, #0f172a 100%) !important;
+  position: relative;
+}
+
+.media-section .section-title {
+  color: #FFFFFF !important;
+}
+
+.media-section .section-title span {
+  background: linear-gradient(135deg, #66D9FF, #FF6B35) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.media-section > p {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.media-item {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+/* ============================================== */
+/* KATMAN 2: HERO DEKORASYONLARI === */
+/* ============================================== */
+
+/* Hero'ya ince grid pattern overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 1;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+}
+
+/* Hero'ya turuncu glow sol üstte */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.35), transparent 70%);
+  filter: blur(80px);
+  z-index: 1;
+  pointer-events: none;
+  animation: floatGlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, 60px) scale(1.15); }
+}
+
+/* Hero içerik üstüne küçük yüzen rozetler */
+.hero-content::before {
+  content: '⭐ 5.0 Google Rating';
+  position: absolute;
+  top: -70px;
+  left: 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: floatBadge 4s ease-in-out infinite;
+}
+
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+/* ============================================== */
+/* KATMAN 1: DERİN KARTLAR === */
+/* ============================================== */
+
+/* Tüm kartlara çift gölge + iç ışık */
+.card-3d,
+.project-card,
+.blog-card,
+.pricing-item,
+.google-review-card,
+.team-member {
+  box-shadow:
+    0 1px 2px rgba(11, 17, 32, 0.04),
+    0 4px 8px rgba(11, 17, 32, 0.06),
+    0 12px 24px rgba(11, 17, 32, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Hover'da dramatik yükselme */
+.card-3d:hover,
+.project-card:hover,
+.blog-card:hover,
+.google-review-card:hover {
+  box-shadow:
+    0 2px 4px rgba(11, 17, 32, 0.06),
+    0 12px 24px rgba(11, 17, 32, 0.1),
+    0 32px 64px rgba(0, 85, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-10px) !important;
+}
+
+/* Pricing kartları özel - turuncu glow */
+.pricing-item-featured {
+  box-shadow:
+    0 4px 12px rgba(255, 107, 53, 0.15),
+    0 20px 40px rgba(255, 107, 53, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+/* ============================================== */
+/* === MODERN DALGA SECTION GEÇİŞLERİ === */
+/* ============================================== */
+
+/* Section'ları hazırla */
+.manager-section,
+.media-section,
+.pricing-section,
+.google-reviews-section,
+.review-promo-section,
+.section-container {
+  position: relative;
+}
+
+/* ===== DALGA 1: Manager (beyaz) → Media (gri) ===== */
+.manager-section {
+  padding-bottom: 140px;
+}
+
+.manager-section::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 90' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C240,90 480,90 720,45 C960,0 1200,0 1440,45 L1440,90 L0,90 Z' fill='%23F1F5F9'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== DALGA 2: Media (gri) → Hizmetler (beyaz) ===== */
+.media-section {
+  padding-bottom: 140px;
+}
+
+.media-section::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 90' preserveAspectRatio='none'%3E%3Cpath d='M0,45 C360,0 720,90 1080,45 C1260,22 1380,30 1440,55 L1440,90 L0,90 Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== DALGA 3: Review Promo (gradient) → SSS (beyaz) ===== */
+.review-promo-section {
+  padding-bottom: 140px;
+}
+
+.review-promo-section::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 90' preserveAspectRatio='none'%3E%3Cpath d='M0,15 C240,90 480,90 720,45 C960,0 1200,65 1440,40 L1440,90 L0,90 Z' fill='%23FFFFFF'/%3E%3C/svg%3E") no-repeat center bottom;
+  background-size: 100% 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===== BONUS: Feature section altına turuncu ince çizgi ===== */
+.feature-section {
+  position: relative;
+}
+
+.feature-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #FF6B35, transparent);
+  border-radius: 3px;
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+} 
+/* ============================================== */
+/* === RENK DÜZELTMESİ (Mor İptal, Mavi Geldi) === */
+/* ============================================== */
+
+/* "Neden WebFlux" bölümü arka planı */
+.feature-section {
+  background: linear-gradient(135deg, #0B1120 0%, #003399 100%) !important;
+}
+
+/* Sağ üstteki o ışık (glow) da mavi kalsın */
+.feature-section::before {
+  background: radial-gradient(circle, rgba(0, 163, 255, 0.25), transparent 70%) !important;
+}
+
+/* "Projelerimizden Kareler" bölümü arka planı */
+.media-section {
+  background: linear-gradient(135deg, #0B1120 0%, #001a4d 100%) !important;
+}
+/* ============================================== */
+/* === DİNAMİK ARKA PLAN EFEKTİ (AURORA / MESH) === */
+/* ============================================== */
+
+/* 1. Ana Arka Planı Hafif Griye Çekelim (Saf beyaz göz yorar) */
+body {
+  background-color: #F8FAFC !important;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 163, 255, 0.05) 1px, transparent 0) !important;
+  background-size: 32px 32px !important;
+}
+
+/* 2. Sol Üstte Mavi Işık (Nefes Alan) */
+html::before {
+  content: '';
+  position: fixed;
+  top: -20%; left: -10%;
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(0, 163, 255, 0.15) 0%, transparent 60%);
+  filter: blur(100px);
+  z-index: -1;
+  pointer-events: none;
+  animation: floatLight1 15s ease-in-out infinite alternate;
+}
+
+/* 3. Sağ Altta Turuncu Işık (Nefes Alan) */
+body::before {
+  content: '';
+  position: fixed;
+  bottom: -20%; right: -10%;
+  width: 70vw; height: 70vw;
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 60%);
+  filter: blur(120px);
+  z-index: -1;
+  pointer-events: none;
+  animation: floatLight2 20s ease-in-out infinite alternate;
+}
+
+/* 4. Işıkların Yüzme Animasyonu */
+@keyframes floatLight1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(10vw, 15vh) scale(1.2); }
+}
+
+@keyframes floatLight2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-10vw, -15vh) scale(1.3); }
+}
+
+/* 5. Üstteki Işıkların Kartların İçinden Görünmesi İçin (Glassmorphism) */
+.card-3d, 
+.project-card, 
+.blog-card, 
+.google-review-card, 
+.pricing-item {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Koyu renkli bölümler (Neden WebFlux vb.) için cam efekti iptal, kendi rengi kalsın */
+.feature-section .card-3d,
+.media-section .media-item {
+  background: inherit !important;
+  backdrop-filter: none !important;
+  border: inherit !important;
+}
