@@ -2069,3 +2069,47 @@ body::before {
   animation: none !important; /* Eski animasyonları sıfırla */
   filter: none !important;
 }
+/* ============================================== */
+/* === HERO İLE ALT BÖLÜM ARASI KUSURSUZ DALGA (SAF CSS) === */
+/* ============================================== */
+
+/* 1. Hero'yu hazırla */
+.hero {
+  position: relative !important;
+  margin-bottom: -2px !important;
+  z-index: 1;
+}
+
+/* 2. "Neden WebFlux" bölümünü yukarı çekip üstünü dalga şeklinde kes */
+.feature-section {
+  position: relative !important;
+  margin-top: -90px !important; /* Bölümü hero'nun üzerine doğru çeker */
+  padding-top: 170px !important; /* İçindeki yazıların kesilmemesi için aşağı iter */
+  z-index: 10 !important; /* Videonun önünde durmasını sağlar */
+  background: #0B1120 !important; /* Koyu lacivert rengi garantiye alıyoruz */
+  
+  /* İşte o meşhur dalga efekti! (SVG yok, saf CSS) */
+  clip-path: polygon(
+    0% 60px, 
+    15% 10px, 
+    35% 70px, 
+    50% 20px, 
+    65% 70px, 
+    85% 10px, 
+    100% 60px, 
+    100% 100%, 
+    0% 100%
+  );
+}
+
+/* 3. Bölümün sağ üstündeki hafif mavi ışığı geri ekleyelim (derinlik için) */
+.feature-section::before {
+  content: '';
+  position: absolute;
+  top: 10%; right: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0, 163, 255, 0.15), transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -1;
+}
