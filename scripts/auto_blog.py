@@ -126,8 +126,8 @@ def generate_unique_blog(news_data):
     return None
 
 def notify_indexnow(url):
-    api_key = "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN" 
-    if api_key == "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN":
+    api_key = "d8b10f2231f84e2b830824e11230e2f6" 
+    if api_key == "d8b10f2231f84e2b830824e11230e2f6":
         print("⚠️ IndexNow anahtarı girilmedi, bildirim atlandı.")
         return
 
