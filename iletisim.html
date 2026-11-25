@@ -84,26 +84,35 @@ gtag('config', 'G-5HSKSWRNPC');
         </div>
 
         <div class="contact-form-card">
-            <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
-                <input type="hidden" name="access_key" value="75bd7e52-a707-40e3-b568-65b7ce93a207">
-                <input type="hidden" name="subject" value="WebFlux Sitesinden Yeni Mesaj">
-                <input type="hidden" name="from_name" value="WebFlux İletişim Formu">
-                <input type="hidden" name="redirect" value="https://webflux.com.tr/tesekkurler.html">
+           <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="75bd7e52-a707-40e3-b568-65b7ce93a207">
+    <input type="hidden" name="subject" value="WebFlux Sitesinden Yeni Mesaj">
+    <input type="hidden" name="from_name" value="WebFlux İletişim Formu">
+    <input type="hidden" name="redirect" value="https://webflux.com.tr/tesekkurler.html">
 
-                <div class="contact-form-group">
-                    <input type="text" name="name" placeholder="Adınız" required>
-                </div>
-                <div class="contact-form-group">
-                    <input type="email" name="email" placeholder="E-posta" required>
-                </div>
-                <div class="contact-form-group">
-                    <input type="text" name="subject" placeholder="Konu (örn: Web Tasarım / E-Ticaret)">
-                </div>
-                <div class="contact-form-group">
-                    <textarea name="message" rows="5" placeholder="Mesajınız..." required></textarea>
-                </div>
-                <button type="submit" class="contact-submit">Gönder <span>→</span></button>
-            </form>
+    <div class="contact-form-group">
+        <input type="text" name="name" placeholder="Adınız" required>
+    </div>
+    <div class="contact-form-group">
+        <input type="email" name="email" placeholder="E-posta" required>
+    </div>
+    <div class="contact-form-group">
+        <input type="text" name="subject" placeholder="Konu (örn: Web Tasarım / E-Ticaret)">
+    </div>
+    <div class="contact-form-group">
+        <textarea name="message" rows="5" placeholder="Mesajınız..." required></textarea>
+    </div>
+
+    <!-- ✅ KVKK ONAY KUTUSU BURAYA EKLENDİ -->
+    <div class="kvkk-checkbox-group">
+        <input type="checkbox" id="kvkkOnay" name="kvkkOnay" required>
+        <label for="kvkkOnay">
+            <a href="kvkk.html" target="_blank">KVKK Aydınlatma Metni</a>'ni okudum ve kişisel verilerimin işlenmesine onay veriyorum.
+        </label>
+    </div>
+
+    <button type="submit" class="contact-submit">Gönder <span>→</span></button>
+</form>
         </div>
 
     </div>

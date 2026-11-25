@@ -283,3 +283,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
     btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 })();
+// KVKK Onay Kontrolü
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("contactForm");
+    const kvkkCheckbox = document.getElementById("kvkkOnay");
+
+    if (form && kvkkCheckbox) {
+        form.addEventListener("submit", function(e) {
+            if (!kvkkCheckbox.checked) {
+                e.preventDefault(); // Formun gönderilmesini engelle
+                alert("Lütfen formu göndermeden önce KVKK Aydınlatma Metni'ni okuyup onaylayın.");
+                kvkkCheckbox.focus();
+                return false;
+            }
+        });
+    }
+});
