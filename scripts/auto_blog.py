@@ -7,6 +7,7 @@ import sys
 import json
 import random
 import time
+import html
 
 def get_latest_news():
     feeds = [
@@ -19,6 +20,7 @@ def get_latest_news():
             feed = feedparser.parse(url)
             for entry in feed.entries[:3]:
                 summary = re.sub('<[^<]+?>', '', entry.get('summary', ''))
+                summary = html.unescape(summary) # HTML entity'leri temizle
                 news_text += f"- {entry.title}: {summary}\n"
         except Exception as e:
             print(f"Haber çekme hatası: {e}")
@@ -54,11 +56,10 @@ def generate_unique_blog(news_data):
         "generationConfig": {"responseMimeType": "application/json"}
     }
     
-    # YEDEKLİ MODEL LİSTESİ VE DAHA UZUN BEKLEME SÜRELERİ
-    models_to_try = ["gemini-3.6-flash", "gemini-3.5-flash"]
-    max_retries_per_model = 3
-    # Bekleme süreleri: 15s, 30s, 60s (Ana model için)
-    retry_delays = [15, 30, 60] 
+    # GERÇEK GEMINI MODELLERİ
+    models_to_try = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"] 
+    max_retries_per_model = 2
+    retry_delays = [10, 20] 
 
     for model_index, model_name in enumerate(models_to_try):
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={api_key}"
@@ -71,7 +72,6 @@ def generate_unique_blog(news_data):
                 
                 if "error" in response_data:
                     error_code = response_data["error"].get("code")
-                    # 503 (Sunucu yoğun) veya 429 (Limit) ise tekrar dene
                     if error_code in [503, 429]:
                         if attempt < max_retries_per_model - 1:
                             wait_time = retry_delays[attempt]
@@ -79,32 +79,36 @@ def generate_unique_blog(news_data):
                             time.sleep(wait_time)
                             continue 
                         else:
-                            print(f"❌ {model_name} modeli {max_retries_per_model} denemeye rağmen yanıt vermedi.")
-                            break # Bu modeli bırak, yedek modele geç
+                            print(f"❌ {model_name} modeli yanıt vermedi.")
+                            break
                     else:
                         print(f"❌ Gemini API Hatası ({model_name}): {response_data}")
-                        sys.exit(1)
+                        break # Diğer modeli dene
                 
                 if "candidates" not in response_data:
                     print(f"Beklenmeyen API Yanıtı ({model_name}):", response_data)
-                    sys.exit(1)
+                    break
                     
                 result_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
                 
                 try:
                     post_data = json.loads(result_text)
                     print(f"✅ Başarılı! {model_name} modeli ile yazı oluşturuldu.")
+                    
+                    # HTML güvenliği için metinleri temizle
+                    safe_title = html.escape(post_data.get("title", "Güncel Web Tasarım Haberleri"))
+                    safe_desc = html.escape(post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."))
+                    
                     return {
-                        "title": post_data.get("title", "Güncel Web Tasarım Haberleri"),
-                        "description": post_data.get("description", "Web tasarım ve dijital dünyadaki en güncel gelişmeler."),
+                        "title": safe_title,
+                        "description": safe_desc,
                         "content": post_data.get("content", "<p>İçerik yüklenemedi.</p>"),
                         "image_query": post_data.get("image_query", "technology"),
                         "date": datetime.now().strftime("%d.%m.%Y")
                     }
                 except json.JSONDecodeError:
-                    print(f"HATA: {model_name} geçerli bir JSON döndürmedi. Gelen yanıt:")
-                    print(result_text)
-                    sys.exit(1)
+                    print(f"HATA: {model_name} geçerli bir JSON döndürmedi.")
+                    break
                     
             except requests.exceptions.RequestException as e:
                 if attempt < max_retries_per_model - 1:
@@ -113,24 +117,20 @@ def generate_unique_blog(news_data):
                     continue
                 else:
                     print(f"❌ İstek Hatası ({model_name}): {e}")
-                    break # Bu modeli bırak, yedek modele geç
+                    break
 
-        # Eğer kod buraya geldiyse, mevcut model tüm denemelere rağmen başarısız oldu.
         if model_index < len(models_to_try) - 1:
-            print(f"🔄 Ana model ({model_name}) yanıt vermedi. Yedek modele ({models_to_try[model_index + 1]}) geçiliyor...")
-            time.sleep(5) # Yedek modele geçmeden önce kısa bir mola
+            print(f"🔄 Model {model_name} başarısız. Yedek modele geçiliyor...")
+            time.sleep(2)
         else:
-            print("❌ Tüm modeller denendi ancak hiçbirinden yanıt alınamadı. Lütfen daha sonra tekrar deneyin.")
+            print("❌ Tüm modeller denendi, yanıt alınamadı.")
             sys.exit(1)
 
     return None
 
 def notify_indexnow(url):
-    api_key = "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN" 
-    if api_key == "BURAYA_INDEXNOW_ANAHTARINIZI_YAZIN":
-        print("⚠️ IndexNow anahtarı girilmedi, bildirim atlandı.")
-        return
-
+    # GERÇEK INDEXNOW ANAHTARIN BURAYA YAZILDI
+    api_key = "d8b10f2231f84e2b830824e11230e2f6" 
     key_location = f"https://webflux.com.tr/{api_key}.txt"
     payload = {
         "host": "webflux.com.tr",
@@ -140,7 +140,7 @@ def notify_indexnow(url):
     }
     try:
         response = requests.post("https://api.indexnow.org/indexnow", json=payload)
-        if response.status_code == 200:
+        if response.status_code in [200, 202]:
             print(f"✅ IndexNow bildirimi başarılı: {url}")
         else:
             print(f"⚠️ IndexNow hatası: {response.status_code}")
@@ -154,7 +154,7 @@ def add_to_blog_html(post):
         sys.exit(1)
         
     with open(file_path, "r", encoding="utf-8") as f:
-        html = f.read()
+        html_content = f.read()
 
     IMAGE_POOL = [
         "photo-1620712943543-bcc4688e7485", "photo-1512941937669-90a1b58e7e9c",
@@ -173,8 +173,11 @@ def add_to_blog_html(post):
     img_id = random.choice(IMAGE_POOL)
     image_url = f"https://images.unsplash.com/{img_id}?q=80&w=800&auto=format&fit=crop"
 
+    # data-content içindeki çift tırnakları &quot; yaparak güvene alıyoruz
+    safe_content = post['content'].replace('"', '&quot;')
+
     new_card = f'''
-    <div class="blog-card card-3d" data-title="{post['title']}" data-description="{post['description']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="<h3>{post['title']}</h3>{post['content']}">
+    <div class="blog-card card-3d" data-title="{post['title']}" data-description="{post['description']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="{safe_content}">
         <img src="{image_url}" alt="{post['title']}" style="width:100%;height:200px;object-fit:cover;border-radius:12px;margin-bottom:20px" loading="lazy">
         <h3>{post['title']}</h3>
         <p style="color:var(--text-muted);margin-bottom:15px">{post['description']}</p>
@@ -183,11 +186,11 @@ def add_to_blog_html(post):
     '''
 
     marker = '<div class="grid-3">'
-    if marker in html:
-        html = html.replace(marker, marker + new_card, 1)
+    if marker in html_content:
+        html_content = html_content.replace(marker, marker + new_card, 1)
         with open(file_path, "w", encoding="utf-8") as f:
-            f.write(html)
-        print(f"✅ BAŞARILI: Yeni blog yazısı ve garantili görsel eklendi.")
+            f.write(html_content)
+        print(f"✅ BAŞARILI: Yeni blog yazısı eklendi.")
         
         notify_indexnow("https://webflux.com.tr/blog.html")
     else:
