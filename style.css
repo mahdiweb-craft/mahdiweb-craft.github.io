@@ -2113,3 +2113,21 @@ body::before {
   pointer-events: none;
   z-index: -1;
 }
+/* Mobil yatay taşma koruması */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img, video, iframe, svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
