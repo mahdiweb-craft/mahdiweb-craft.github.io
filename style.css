@@ -2131,54 +2131,26 @@ img, video, iframe, svg {
     height: auto;
     display: block;
 }
-/* Google Yorum Kutusu */
-.google-review-box {
-    background: linear-gradient(135deg, rgba(0, 163, 255, 0.08), rgba(0, 163, 255, 0.02));
-    border: 1px solid rgba(0, 163, 255, 0.25);
-    border-radius: 16px;
-    padding: 30px;
+/* Mini Google Yorum Notu */
+.mini-review-not {
     text-align: center;
-    max-width: 600px;
-    margin: 40px auto;
-    backdrop-filter: blur(10px);
-}
-
-.google-review-box .review-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-}
-
-.google-review-box h3 {
-    color: #fff;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.google-review-box p {
+    font-size: 0.9rem;
     color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    margin: 20px auto;
+    padding: 10px;
+    max-width: 600px;
 }
 
-.google-review-box .review-btn {
-    display: inline-block;
-    background: #00A3FF;
-    color: #fff;
-    padding: 12px 28px;
-    border-radius: 8px;
+.mini-review-not a {
+    color: #00A3FF;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 163, 255, 0.3);
+    transition: color 0.3s ease;
 }
 
-.google-review-box .review-btn:hover {
-    background: #0088d6;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 163, 255, 0.4);
+.mini-review-not a:hover {
+    color: #fff;
+    text-decoration: underline;
 }
 /* KVKK Onay Kutusu */
 .kvkk-checkbox-group {
