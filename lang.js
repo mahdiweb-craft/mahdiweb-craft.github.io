@@ -621,7 +621,7 @@ const langMeta = { tr:{flag:"TR",dir:"ltr"}, en:{flag:"EN",dir:"ltr"}, fa:{flag:
 
 function setLanguage(lang) {
   if(!translations[lang]) lang = 'tr';
-  localStorage.setItem('webflux_lang', lang);
+  try { localStorage.setItem('webflux_lang', lang); } catch (_) {}
   document.documentElement.lang = lang;
   document.documentElement.dir = langMeta[lang].dir;
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -641,7 +641,7 @@ function setLanguage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  setLanguage(localStorage.getItem('webflux_lang') || 'tr');
+  setLanguage((() => { try { return localStorage.getItem('webflux_lang') || 'tr'; } catch (_) { return 'tr'; } })());
   const t = document.getElementById('langToggle'), d = document.getElementById('langDropdown');
   if(t && d) {
     t.addEventListener('click', e => { e.stopPropagation(); d.classList.toggle('active'); });
@@ -672,7 +672,7 @@ function updateHeroTitles(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const savedLang = localStorage.getItem('webflux_lang') || 'tr';
+    const savedLang = (() => { try { return localStorage.getItem('webflux_lang') || 'tr'; } catch (_) { return 'tr'; } })();
     setTimeout(() => updateHeroTitles(savedLang), 100);
 
     document.querySelectorAll('.lang-option').forEach(opt => {

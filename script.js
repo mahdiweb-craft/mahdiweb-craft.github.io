@@ -1,301 +1,96 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // MOBİL MENÜ
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-    if(menuToggle) menuToggle.addEventListener('click', () => nav.classList.toggle('active'));
 
-    // 3D KART EFEKTİ
-    const cards = document.querySelectorAll('.card-3d');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const rotateX = ((e.clientY - rect.top - rect.height/2) / (rect.height/2)) * -3;
-            const rotateY = ((e.clientX - rect.left - rect.width/2) / (rect.width/2)) * 3;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-        });
-        card.addEventListener('mouseleave', () => card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)');
-    });
-
-    // ACCORDION (SSS)
-    document.querySelectorAll('.accordion-header').forEach(acc => {
-        acc.addEventListener('click', () => {
-            const body = acc.nextElementSibling;
-            const icon = acc.querySelector('span');
-            if(body.style.display === 'block') { body.style.display = 'none'; if(icon) icon.textContent = '+'; }
-            else { body.style.display = 'block'; if(icon) icon.textContent = '-'; }
-        });
-    });
-
-    // SAYAÇ
-    const counters = document.querySelectorAll('.counter');
-    let animated = false;
-    const animateCounters = () => counters.forEach(c => {
-        const target = +c.getAttribute('data-target');
-        const update = () => {
-            const count = +c.innerText;
-            if (count < target) { c.innerText = Math.ceil(count + target/200); setTimeout(update, 20); }
-            else c.innerText = target;
-        };
-        update();
-    });
-    const statsSection = document.querySelector('.stats-container');
-    if(statsSection) {
-        new IntersectionObserver((entries) => {
-            entries.forEach(e => { if(e.isIntersecting && !animated) { animateCounters(); animated = true; } });
-        }, { threshold: 0.5 }).observe(statsSection);
-    }
-
-    // PROJE MODAL
-    const projectModal = document.getElementById('projectModal');
-    if(projectModal) {
-        document.querySelectorAll('.project-link').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const card = btn.closest('.project-card');
-                document.getElementById('modalTitle').innerText = card.querySelector('h3').innerText;
-                document.getElementById('modalSector').innerText = card.querySelector('.sector').innerText;
-                document.getElementById('modalImg').src = card.querySelector('.project-img').src;
-                document.getElementById('modalDesc').innerText = card.querySelector('.project-info p').innerText;
-                document.getElementById('modalFeatures').innerHTML = Array.from(card.querySelectorAll('.project-info ul li')).map(li => `<li>${li.innerText}</li>`).join('');
-                document.getElementById('modalExternalLink').href = card.dataset.link || '#';
-                projectModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        const close = () => { projectModal.classList.remove('active'); document.body.style.overflow = 'auto'; };
-        projectModal.querySelector('.modal-close').addEventListener('click', close);
-        projectModal.addEventListener('click', e => { if(e.target === projectModal) close(); });
-    }
-
-    // BLOG MODAL
-    const blogModal = document.getElementById('blogModal');
-    if(blogModal) {
-        document.querySelectorAll('.blog-read-more').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const card = btn.closest('.blog-card');
-                document.getElementById('blogModalTitle').innerText = card.dataset.title;
-                document.getElementById('blogModalImg').src = card.dataset.img;
-                document.getElementById('blogModalDate').innerText = card.dataset.date;
-                document.getElementById('blogModalAuthor').innerText = card.dataset.author;
-                document.getElementById('blogModalContent').innerHTML = card.dataset.content;
-                blogModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-        const close = () => { blogModal.classList.remove('active'); document.body.style.overflow = 'auto'; };
-        blogModal.querySelector('.modal-close').addEventListener('click', close);
-        blogModal.addEventListener('click', e => { if(e.target === blogModal) close(); });
-    }
-
-    // GENEL INFO MODAL (Kart, Süreç, Galeri tıklamaları için TEK çözüm)
-    if(!document.getElementById('infoModal')) {
-        const infoModalHTML = `
-            <div class="modal" id="infoModal">
-                <div class="modal-content">
-                    <button class="modal-close">&times;</button>
-                    <h2 id="infoModalTitle"></h2>
-                    <img id="infoModalImg" src="" alt="">
-                    <div class="blog-content-text" id="infoModalDesc"></div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', infoModalHTML);
-    }
-
-    const infoModal = document.getElementById('infoModal');
-    const infoTitle = document.getElementById('infoModalTitle');
-    const infoImg = document.getElementById('infoModalImg');
-    const infoDesc = document.getElementById('infoModalDesc');
-    const infoClose = infoModal.querySelector('.modal-close');
-
-    document.querySelectorAll('.card-3d[data-info-title], .media-item[data-gallery-title]').forEach(item => {
-        item.style.cursor = 'pointer';
-        item.addEventListener('click', (e) => {
-            if(e.target.closest('a, button')) return;
-            const title = item.getAttribute('data-info-title') || item.getAttribute('data-gallery-title');
-            const desc = item.getAttribute('data-info-desc') || item.getAttribute('data-gallery-desc') || '';
-            let imgSrc = item.getAttribute('data-info-img') || item.getAttribute('data-gallery-img') || '';
-            if(!imgSrc) {
-                const imgEl = item.querySelector('img');
-                if(imgEl) imgSrc = imgEl.src;
-            }
-            infoTitle.innerText = title;
-            infoImg.src = imgSrc;
-            infoImg.alt = title;
-            infoDesc.innerHTML = desc;
-            infoModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    const closeInfo = () => { infoModal.classList.remove('active'); document.body.style.overflow = 'auto'; };
-    infoClose.addEventListener('click', closeInfo);
-    infoModal.addEventListener('click', e => { if(e.target === infoModal) closeInfo(); });
-
-    // YILDIZ PUANLAMA
-    const stars = document.querySelectorAll('.rating-stars span');
-    const ratingInput = document.getElementById('ratingValue');
-    if(stars.length > 0) {
-        stars.forEach((star, i) => {
-            star.addEventListener('click', () => {
-                ratingInput.value = i + 1;
-                stars.forEach((s, j) => s.classList.toggle('active', j <= i));
-            });
-        });
-    }
-});
-
-// === HERO 3D SCROLL ===
-(function() {
-    const hero = document.querySelector('.hero');
-    const heroContent = document.querySelector('.hero-content');
-    const heroVideo = document.querySelector('.hero-video');
-    const heroOverlay = document.querySelector('.hero-overlay');
-    const heroTitle = document.querySelector('.hero h1');
-    const heroText = document.querySelector('.hero p');
-    const heroButtons = document.querySelector('.hero-buttons');
-    if(!hero || !heroContent) return;
-    hero.style.perspective = '1200px';
-    hero.style.transformStyle = 'preserve-3d';
-    let ticking = false;
-    function updateHero() {
-        const scrollY = window.scrollY;
-        const heroHeight = hero.offsetHeight;
-        const progress = Math.min(scrollY / heroHeight, 1);
-        if(heroVideo) heroVideo.style.transform = `scale(${1 + progress * 0.35})`;
-        if(heroOverlay) heroOverlay.style.opacity = String(Math.min(1 + progress * 0.5, 1.3));
-        const contentZ = progress * 400;
-        const rotateX = progress * 22;
-        const contentScale = 1 + progress * 0.18;
-        const contentOpacity = Math.max(1 - progress * 1.4, 0);
-        heroContent.style.transform = `translateZ(${contentZ}px) rotateX(${-rotateX}deg) scale(${contentScale})`;
-        heroContent.style.opacity = String(contentOpacity);
-        if(heroTitle) {
-            heroTitle.style.transform = `translateZ(${progress * 650}px) scale(${1 + progress * 0.55})`;
-            heroTitle.style.filter = `blur(${progress * 10}px)`;
-            heroTitle.style.opacity = String(Math.max(1 - progress * 1.6, 0));
-        }
-        if(heroText) {
-            heroText.style.transform = `translateZ(${progress * 280}px) translateY(${-progress * 35}px)`;
-            heroText.style.opacity = String(Math.max(1 - progress * 1.8, 0));
-            heroText.style.filter = `blur(${progress * 7}px)`;
-        }
-        if(heroButtons) {
-            heroButtons.style.transform = `translateZ(${progress * 120}px) translateY(${progress * 45}px)`;
-            heroButtons.style.opacity = String(Math.max(1 - progress * 2, 0));
-        }
-    }
-    window.addEventListener('scroll', () => {
-        if(!ticking) { window.requestAnimationFrame(() => { updateHero(); ticking = false; }); ticking = true; }
-    }, { passive: true });
-    updateHero();
-})();
-
-// === SCROLL ANİMASYON ===
-(function() {
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if(!('IntersectionObserver' in window)) {
-        document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
-        return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    function autoReveal() {
-        const sections = document.querySelectorAll('section:not(.hero), footer');
-        sections.forEach((section) => {
-            const cards = section.querySelectorAll('.card-3d, .project-card, .blog-card, .media-item, .accordion-item, .stat-item, .google-review-card, .team-member');
-            cards.forEach((card, i) => {
-                if(card.classList.contains('reveal')) return;
-                let animType = 'reveal-up';
-                if(section.querySelector('.project-card')) animType = 'reveal-tilt';
-                else if(section.querySelector('.blog-card')) animType = 'reveal-zoom';
-                else if(section.querySelector('.media-item')) animType = 'reveal-rotate';
-                else if(section.querySelector('.google-review-card')) animType = 'reveal-up';
-                else if(section.querySelector('.team-member')) animType = 'reveal-zoom';
-                else if(section.querySelector('.card-3d')) animType = 'reveal-flip';
-                card.classList.add('reveal', animType);
-                card.classList.add('reveal-delay-' + ((i % 8) + 1));
-                observer.observe(card);
-            });
-            const titles = section.querySelectorAll('.section-title');
-            titles.forEach(title => {
-                if(!title.classList.contains('reveal')) { title.classList.add('reveal', 'reveal-down'); observer.observe(title); }
-            });
-        });
-        const managerSection = document.querySelector('.manager-section');
-        if(managerSection) {
-            const img = managerSection.querySelector('.manager-img-wrapper');
-            const text = managerSection.querySelector('.manager-text');
-            if(img && !img.classList.contains('reveal')) { img.classList.add('reveal', 'reveal-left'); observer.observe(img); }
-            if(text && !text.classList.contains('reveal')) { text.classList.add('reveal', 'reveal-right'); observer.observe(text); }
-        }
-        const statsContainer = document.querySelector('.stats-container');
-        if(statsContainer) {
-            const statsObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if(entry.isIntersecting) { statsContainer.classList.add('is-visible'); statsObserver.unobserve(entry.target); }
-                });
-            }, { threshold: 0.3 });
-            statsObserver.observe(statsContainer);
-        }
-    }
-    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoReveal);
-    else autoReveal();
-    window.addEventListener('load', () => setTimeout(autoReveal, 300));
-})();
-
-// === SMOOTH SCROLL ===
-(function() {
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if(targetId === '#' || targetId.length < 2) return;
-            const target = document.querySelector(targetId);
-            if(target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-        });
-    });
-})();
-
-// === SAYFA BAŞINA DÖN BUTONU ===
-(function() {
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const btn = document.createElement('button');
-    btn.className = 'back-to-top';
-    btn.innerHTML = '↑';
-    btn.setAttribute('aria-label', 'Yukarı çık');
-    btn.style.cssText = 'position:fixed;bottom:30px;right:30px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#00A3FF,#0055FF);color:white;border:none;cursor:pointer;font-size:22px;font-weight:700;box-shadow:0 4px 20px rgba(0,163,255,0.4);opacity:0;visibility:hidden;transform:translateY(20px) scale(0.8);transition:opacity .3s,transform .3s,visibility .3s;z-index:999;display:flex;align-items:center;justify-content:center;';
-    document.body.appendChild(btn);
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-        if(!ticking) {
-            window.requestAnimationFrame(() => {
-                if(window.scrollY > 500) { btn.style.opacity='1'; btn.style.visibility='visible'; btn.style.transform='translateY(0) scale(1)'; }
-                else { btn.style.opacity='0'; btn.style.visibility='hidden'; btn.style.transform='translateY(20px) scale(0.8)'; }
-                ticking = false;
-            });
-            ticking = true;
-        }
-    }, { passive: true });
-    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-})();
-// KVKK Onay Kontrolü
-document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById("contactForm");
-    const kvkkCheckbox = document.getElementById("kvkkOnay");
-
-    if (form && kvkkCheckbox) {
-        form.addEventListener("submit", function(e) {
-            if (!kvkkCheckbox.checked) {
-                e.preventDefault(); // Formun gönderilmesini engelle
-                alert("Lütfen formu göndermeden önce KVKK Aydınlatma Metni'ni okuyup onaylayın.");
-                kvkkCheckbox.focus();
-                return false;
-            }
-        });
-    }
+/* WEBFLUX / interactions — no external dependencies */
+document.addEventListener('DOMContentLoaded',()=>{
+ const q=(s,el=document)=>el.querySelector(s), qa=(s,el=document)=>Array.from(el.querySelectorAll(s));
+ // Preserve existing image URLs; use local artwork when a remote image fails.
+ document.addEventListener('error',e=>{const img=e.target;if(img instanceof HTMLImageElement&&img.closest('main,.modal')&&!img.dataset.localFallback){if(img.getAttribute('onerror')&&img.onerror)return;img.dataset.localFallback='1';img.src='images/image-fallback.svg'}},true);
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const translationsUI={
+ tr:{search:'Blog yazılarında ara…',all:'Tümü',more:'Daha fazla yazı',none:'Aramanıza uygun sonuç bulunamadı.',close:'Kapat',count:'sonuç',top:'Yukarı çık'},
+ en:{search:'Search articles…',all:'All',more:'Load more articles',none:'No matching results.',close:'Close',count:'results',top:'Back to top'},
+ fa:{search:'جستجوی مقالات…',all:'همه',more:'مقالات بیشتر',none:'نتیجه‌ای یافت نشد.',close:'بستن',count:'نتیجه',top:'بازگشت به بالا'},
+ ar:{search:'ابحث في المقالات…',all:'الكل',more:'عرض المزيد',none:'لا توجد نتائج مطابقة.',close:'إغلاق',count:'نتائج',top:'العودة للأعلى'},
+ ru:{search:'Поиск статей…',all:'Все',more:'Показать ещё',none:'Ничего не найдено.',close:'Закрыть',count:'результатов',top:'Наверх'}
+ };
+ const ui=()=>translationsUI[document.documentElement.lang]||translationsUI.tr;
+ const nav=q('nav'),toggle=q('.menu-toggle');
+ const closeNav=()=>{nav?.classList.remove('active');toggle?.setAttribute('aria-expanded','false')};
+ toggle?.addEventListener('click',()=>{const open=nav.classList.toggle('active');toggle.setAttribute('aria-expanded',String(open))});
+ qa('nav a').forEach(a=>a.addEventListener('click',closeNav));
+ document.addEventListener('click',e=>{if(!e.target.closest('header'))closeNav()});
+ matchMedia('(min-width:791px)').addEventListener('change',closeNav);
+ const langToggle=q('#langToggle'),langDropdown=q('#langDropdown');
+ if(langToggle&&langDropdown)new MutationObserver(()=>langToggle.setAttribute('aria-expanded',String(langDropdown.classList.contains('active')))).observe(langDropdown,{attributes:true,attributeFilter:['class']});
+ // Native accordion buttons with proper state.
+ qa('.accordion-header').forEach((button,i)=>{
+   const body=button.nextElementSibling;if(!body)return;
+   button.id=button.id||`faq-button-${i}`;body.id=body.id||`faq-answer-${i}`;
+   body.hidden=true;button.setAttribute('aria-controls',body.id);
+   body.setAttribute('aria-labelledby',button.id);body.setAttribute('role','region');
+   button.addEventListener('click',()=>{const opening=body.hidden;body.hidden=!opening;button.setAttribute('aria-expanded',String(opening));const span=q('span',button);if(span)span.textContent=opening?'−':'+'});
+ });
+ // Shared accessible dialog for service, project, and gallery details.
+ let modal=q('#infoModal');
+ if(!modal){modal=document.createElement('div');modal.className='modal';modal.id='infoModal';modal.innerHTML='<div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle" tabindex="-1"><button class="modal-close" type="button">×</button><h2 id="infoModalTitle"></h2><img id="infoModalImg" alt="" hidden><div class="blog-content-text" id="infoModalDesc"></div><a class="btn-primary" id="infoModalLink" target="_blank" rel="noopener noreferrer" hidden>↗</a></div>';document.body.append(modal)}
+ let active=null,previous=null;
+ const focusables=el=>qa('button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex="0"]',el).filter(x=>!x.hidden&&x.getClientRects().length);
+ function openDialog(el,trigger){
+   if(active)closeDialog(false);previous=trigger||document.activeElement;active=el;
+   el.classList.add('active');el.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+   const panel=q('.modal-content',el);panel?.setAttribute('role','dialog');panel?.setAttribute('aria-modal','true');panel?.setAttribute('tabindex','-1');
+   if(panel){const heading=q('h2',panel);if(heading){heading.id=heading.id||'dialog-title';panel.setAttribute('aria-labelledby',heading.id)}}
+   const close=q('.modal-close',el);if(close){close.setAttribute('aria-label',ui().close);close.focus()}else panel?.focus();
+ }
+ function closeDialog(restore=true){if(!active)return;active.classList.remove('active');active.setAttribute('aria-hidden','true');document.body.style.overflow='';active=null;if(restore)previous?.focus()}
+ qa('.modal').forEach(el=>{el.setAttribute('aria-hidden','true');q('.modal-close',el)?.addEventListener('click',()=>closeDialog());el.addEventListener('click',e=>{if(e.target===el)closeDialog()})});
+ document.addEventListener('keydown',e=>{
+   if(e.key==='Escape'){if(active){closeDialog();return}closeNav();langDropdown?.classList.remove('active')}
+   if(e.key==='Tab'&&active){const f=focusables(active);if(!f.length){e.preventDefault();return}if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===f.at(-1)){e.preventDefault();f[0].focus()}}
+ });
+ // Parse article markup in a detached document and allow content tags only.
+ function safeContent(node,markup){
+   const parsed=new DOMParser().parseFromString(markup||'','text/html');
+   const allowed=new Set(['P','H2','H3','H4','H5','UL','OL','LI','STRONG','B','EM','I','BR','BLOCKQUOTE','CODE','PRE','A','HR']);
+   function convert(src){if(src.nodeType===3)return document.createTextNode(src.textContent);if(src.nodeType!==1||['SCRIPT','STYLE','IFRAME','OBJECT','SVG'].includes(src.tagName))return document.createDocumentFragment();const out=allowed.has(src.tagName)?document.createElement(src.tagName.toLowerCase()):document.createDocumentFragment();if(src.tagName==='A'){try{const u=new URL(src.getAttribute('href'),location.href);if(['http:','https:','mailto:'].includes(u.protocol)){out.href=u.href;out.target='_blank';out.rel='noopener noreferrer'}}catch{}}for(const child of src.childNodes)out.append(convert(child));return out}
+   node.replaceChildren(...Array.from(parsed.body.childNodes,convert));
+ }
+ function info(title,description,src,trigger,link){
+   q('#infoModalTitle').textContent=title;const image=q('#infoModalImg');image.hidden=!src;if(src)image.src=src;image.alt=title;
+   safeContent(q('#infoModalDesc'),description);const action=q('#infoModalLink');action.hidden=!link;if(link){action.href=link;action.textContent=(document.documentElement.lang==='tr'?'Siteyi ziyaret et':'Visit website')+' ↗'}openDialog(modal,trigger);
+ }
+ qa('.card-3d[data-info-title],.media-item[data-gallery-title]').forEach(card=>{
+   card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-haspopup','dialog');
+   const show=()=>info(card.dataset.infoTitle||card.dataset.galleryTitle,card.dataset.infoDesc||card.dataset.galleryDesc,card.dataset.infoImg||card.dataset.galleryImg||q('img',card)?.src,card);
+   card.addEventListener('click',e=>{if(!e.target.closest('a,button'))show()});card.addEventListener('keydown',e=>{if(e.target===card&&['Enter',' '].includes(e.key)){e.preventDefault();show()}});
+ });
+ qa('.project-details').forEach(btn=>btn.addEventListener('click',()=>{const card=btn.closest('.project-card');const desc=document.createElement('div');desc.append(q('.project-info p',card).cloneNode(true),q('.project-info ul',card).cloneNode(true));info(q('h3',card).textContent,desc.innerHTML,q('.project-img',card).src,btn,card.dataset.link)}));
+ const blogModal=q('#blogModal');
+ if(blogModal)qa('.blog-read-more').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();const card=btn.closest('.blog-card');q('#blogModalTitle').textContent=card.dataset.title;q('#blogModalImg').src=card.dataset.img;q('#blogModalImg').alt=card.dataset.title;q('#blogModalDate').textContent=card.dataset.date;q('#blogModalAuthor').textContent=card.dataset.author;safeContent(q('#blogModalContent'),card.dataset.content);openDialog(blogModal,btn)}));
+ // Search and progressive disclosure for the blog.
+ const blogCards=qa('.page-blog .blog-card');
+ let refreshBlog=()=>{};
+ if(blogCards.length){
+   const grid=blogCards[0].parentElement;const bar=document.createElement('div');bar.className='filter-bar';bar.innerHTML='<input class="filter-input" type="search"><span class="filter-count" aria-live="polite"></span>';grid.before(bar);
+   const search=q('input',bar),count=q('.filter-count',bar),more=document.createElement('button'),empty=document.createElement('p');more.type='button';more.className='btn-secondary load-more';empty.className='filter-empty';grid.after(empty,more);
+   blogCards.forEach(c=>{const date=document.createElement('div');date.className='blog-date';date.textContent=c.dataset.date||'';q('h3',c)?.before(date)});
+   let limit=9;const norm=s=>String(s||'').toLocaleLowerCase('tr').normalize('NFKD').replace(/\p{Diacritic}/gu,'');
+   refreshBlog=()=>{search.placeholder=ui().search;search.setAttribute('aria-label',ui().search);more.textContent=ui().more;empty.textContent=ui().none;let n=0;const query=norm(search.value.trim());blogCards.forEach(c=>{const match=norm([c.dataset.title,c.dataset.description,c.dataset.content].join(' ')).includes(query);if(match)n++;c.hidden=!match||n>limit});count.textContent=`${Math.min(n,limit)} / ${n} ${ui().count}`;empty.hidden=n!==0;more.hidden=n<=limit};
+   search.addEventListener('input',()=>{limit=9;refreshBlog()});more.addEventListener('click',()=>{limit+=9;refreshBlog()});refreshBlog();
+ }
+ // Filter by actual portfolio sectors.
+ const projects=qa('.page-projeler .project-card');let refreshProjects=()=>{};
+ if(projects.length){const grid=projects[0].parentElement;const bar=document.createElement('div');bar.className='filter-bar';const group=document.createElement('div');group.className='filter-buttons';const count=document.createElement('span');count.className='filter-count';count.setAttribute('aria-live','polite');bar.append(group,count);grid.before(bar);const sectors=[...new Set(projects.map(c=>q('.sector',c).textContent.trim()))];let activeSector='';const buttons=['',...sectors].map(sector=>{const b=document.createElement('button');b.type='button';b.className='filter-button';b.textContent=sector||ui().all;b.addEventListener('click',()=>{activeSector=sector;refreshProjects()});group.append(b);return b});
+ refreshProjects=()=>{buttons[0].textContent=ui().all;let n=0;projects.forEach(c=>{c.hidden=!!activeSector&&q('.sector',c).textContent.trim()!==activeSector;if(!c.hidden)n++});buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String((i===0?'':sectors[i-1])===activeSector)));count.textContent=`${n} / ${projects.length} ${ui().count}`};refreshProjects()}
+ // Carry selected package into existing contact form.
+ const form=q('#contactForm');if(form){const packageName=new URLSearchParams(location.search).get('paket');const subject=q('input[name=subject]:not([type=hidden])',form);if(packageName&&subject)subject.value=packageName.slice(0,150);const check=q('#kvkkOnay',form);form.addEventListener('formdata',e=>{e.formData.set('subject',subject?.value.trim()||'WebFlux Sitesinden Yeni Mesaj')});form.addEventListener('submit',e=>{if(check&&!check.checked){e.preventDefault();check.reportValidity();check.focus()}})}
+ // Pause moving media when offscreen and respect reduced motion.
+ const videos=qa('main video');
+ if(reduced){videos.forEach(v=>{v.autoplay=false;v.pause();v.removeAttribute('autoplay')})}
+ else if('IntersectionObserver' in window){const videoObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.play().catch(()=>{});else e.target.pause()}),{threshold:.15});videos.forEach(v=>videoObserver.observe(v))}
+ // Lightweight entrance motion, no aggressive 3D scrolling.
+ if(!reduced&&'IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');observer.unobserve(e.target)}}),{threshold:.06});qa('.page-index .section-title,.page-index .card-3d,.page-index .media-item,.page-index .manager-section,.page-index .pricing-item').forEach(el=>{el.classList.add('reveal');observer.observe(el)});document.body.classList.add('motion-ready')}
+ const top=document.createElement('button');top.className='back-to-top';top.type='button';top.textContent='↑';top.setAttribute('aria-label',ui().top);top.addEventListener('click',()=>scrollTo({top:0,behavior:reduced?'instant':'smooth'}));document.body.append(top);
+ const progress=document.createElement('div');progress.className='scroll-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);
+ let ticking=false;const update=()=>{const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=`${max>0?Math.min(100,scrollY/max*100):0}%`;top.classList.toggle('visible',scrollY>600);ticking=false};addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(update)}},{passive:true});update();
+ new MutationObserver(()=>{refreshBlog();refreshProjects();top.setAttribute('aria-label',ui().top)}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 });

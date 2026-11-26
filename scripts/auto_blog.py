@@ -174,7 +174,7 @@ def add_to_blog_html(post):
     image_url = f"https://images.unsplash.com/{img_id}?q=80&w=800&auto=format&fit=crop"
 
     # data-content içindeki çift tırnakları &quot; yaparak güvene alıyoruz
-    safe_content = post['content'].replace('"', '&quot;')
+    safe_content = html.escape(post['content'], quote=True)
 
     new_card = f'''
     <div class="blog-card card-3d" data-title="{post['title']}" data-description="{post['description']}" data-img="{image_url}" data-date="{post['date']}" data-author="WebFlux Ekibi" data-content="{safe_content}">
